@@ -9,7 +9,7 @@ public class Database {
     int param_i;
 
     public void statement( String query ) throws SQLException {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/seroo/Desktop/Bidly/database.sqlite");
+        this.connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/seroo/Desktop/SoftwareGit/SoftwareGruppe5/Bidly/database.sqlite");
         this.statement = this.connection.prepareStatement( query );
         this.param_i = 1;
     }

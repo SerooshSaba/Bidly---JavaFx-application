@@ -5,17 +5,19 @@ import Utility.DataValidator;
 import Utility.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class StoreOwnerController {
-
 
     // - - - Store title label
     @FXML
@@ -26,6 +28,7 @@ public class StoreOwnerController {
     private VBox AddForm;
     @FXML
     private Label MessageLabel;
+
     // Input fields
     @FXML
     private TextField ItemName;
@@ -42,7 +45,7 @@ public class StoreOwnerController {
 
     Database database = new Database();
     DataValidator validator = new DataValidator();
-    ComponentCreator creator = new ComponentCreator(this);
+    //ComponentCreator creator = new ComponentCreator(this);
 
     public void initialize() throws SQLException {
         // Load storename
@@ -65,12 +68,13 @@ public class StoreOwnerController {
 
         // Print out all products
         while( result.next() ) {
+            System.out.println("loop running");
             int    id   = result.getInt("antiqe_id");
             String name = result.getString("name");
             String picurl = result.getString("pic_url");
             String description = result.getString("description");
             int price = result.getInt("price");
-            ProductContainer.getChildren().add( creator.createProductListItem(id,name,picurl,description,price) );
+            ProductContainer.getChildren().add( this.createProductListItem(id,name,picurl,description,price) );
         }
 
         database.close();
@@ -126,14 +130,62 @@ public class StoreOwnerController {
     // Add item method
     public void deleteClick(ActionEvent actionEvent) throws SQLException {
         Button button = (Button)(actionEvent.getSource());
-        /*
         this.database.statement("DELETE FROM antiqes WHERE antiqe_id = ?");
         this.database.passInt(Integer.parseInt(button.getId()));
         this.database.execute();
         this.database.close();
         this.loadProducts();
-        */
     }
+
+    // Product list item creator
+
+    public HBox createProductListItem(int id, String name, String picurl, String description, int price ) {
+
+        HBox container = new HBox();
+        //container.setStyle("-fx-border-color:rgb(200,200,200)");
+        container.setPrefWidth(280);
+        container.setSpacing(5);
+
+        VBox left_image_container = new VBox();
+
+        Image img_obj = new Image(picurl);
+        ImageView image = new ImageView(img_obj);
+        image.setFitHeight(50);
+        image.setFitWidth(50);
+        left_image_container.getChildren().add(image);
+
+        VBox right_container = new VBox();
+
+        // Labels
+        Label name_label = new Label();
+        name_label.setText(name);
+        name_label.setStyle("-fx-font-size:12.5;-fx-font-weight:bold");
+
+        Label price_label = new Label();
+        price_label.setText(price + "$");
+        price_label.setStyle("-fx-text-fill:green;-fx-font-size:10");
+
+        // Delete button
+        Button delete_button = new Button();
+        delete_button.setText("Delete");
+        delete_button.setId(String.valueOf(id));
+        delete_button.setPadding(new Insets(1));
+        /*
+        delete_button.setOnAction(e -> {
+            try {
+                this.controller.deleteClick(e);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        });
+        */
+
+        right_container.getChildren().addAll(name_label,price_label,delete_button);
+        container.getChildren().addAll(left_image_container,right_container);
+
+        return container;
+    }
+
 
     /* REDIRECT
     FXMLLoader root = new FXMLLoader(Application.class.getResource("authentication.fxml"));
@@ -144,6 +196,5 @@ public class StoreOwnerController {
     ApplicationController controller = root.getController();
     controller.shout();
     */
-
 
 }

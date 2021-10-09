@@ -56,6 +56,7 @@ public class ComponentCreator {
         delete_button.setText("Delete");
         delete_button.setId(String.valueOf(id));
         delete_button.setPadding(new Insets(1));
+        /*
         delete_button.setOnAction(e -> {
             try {
                 this.controller.deleteClick(e);
@@ -63,6 +64,7 @@ public class ComponentCreator {
                 ex.printStackTrace();
             }
         });
+        */
 
         right_container.getChildren().addAll(name_label,price_label,delete_button);
         container.getChildren().addAll(left_image_container,right_container);

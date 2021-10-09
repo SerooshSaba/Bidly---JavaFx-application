@@ -35,14 +35,14 @@ public class ApplicationController {
         if (  UserSelection.equals("Admin")  ) {
             FXMLLoader root = new FXMLLoader(Application.class.getResource("adminview.fxml"));
             Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root.load(), 750, 500);
+            Scene scene = new Scene(root.load(), 850, 600);
             stage.setScene(scene);
             stage.show();
         }
         else if ( UserSelection.equals("Auctioneer") ) {
             FXMLLoader root = new FXMLLoader(Application.class.getResource("storeownerview.fxml"));
             Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root.load(), 750, 500);
+            Scene scene = new Scene(root.load(), 850, 800);
             stage.setScene(scene);
             stage.show();
         }
