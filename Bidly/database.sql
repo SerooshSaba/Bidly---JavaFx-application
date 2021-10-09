@@ -5,7 +5,7 @@ drop table bids;
 
 PRAGMA foreign_keys = ON;
 
--- TABLES
+--- TABLES
 
 CREATE TABLE stores (
                         store_id    INTEGER NOT NULL PRIMARY KEY,
