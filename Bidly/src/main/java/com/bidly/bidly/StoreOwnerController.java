@@ -68,7 +68,6 @@ public class StoreOwnerController {
 
         // Print out all products
         while( result.next() ) {
-            System.out.println("loop running");
             int    id   = result.getInt("antiqe_id");
             String name = result.getString("name");
             String picurl = result.getString("pic_url");
@@ -148,7 +147,7 @@ public class StoreOwnerController {
 
         VBox left_image_container = new VBox();
 
-        Image img_obj = new Image(picurl);
+        Image img_obj = new Image(picurl,true);
         ImageView image = new ImageView(img_obj);
         image.setFitHeight(50);
         image.setFitWidth(50);
@@ -170,16 +169,13 @@ public class StoreOwnerController {
         delete_button.setText("Delete");
         delete_button.setId(String.valueOf(id));
         delete_button.setPadding(new Insets(1));
-        /*
         delete_button.setOnAction(e -> {
             try {
-                this.controller.deleteClick(e);
+                this.deleteClick(e);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         });
-        */
-
         right_container.getChildren().addAll(name_label,price_label,delete_button);
         container.getChildren().addAll(left_image_container,right_container);
 

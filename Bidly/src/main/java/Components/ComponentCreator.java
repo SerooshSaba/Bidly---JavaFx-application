@@ -13,7 +13,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import com.bidly.bidly.StoreOwnerController;
-
 import java.sql.SQLException;
 
 public class ComponentCreator {
