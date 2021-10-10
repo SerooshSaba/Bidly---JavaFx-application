@@ -1,11 +1,13 @@
 package com.bidly.bidly;
 
-import Components.ComponentCreator;
 import Utility.DataValidator;
 import Utility.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -13,6 +15,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,12 +64,10 @@ public class StoreOwnerController {
     private void loadProducts() throws SQLException {
         // Empty container
         ProductContainer.getChildren().clear();
-
         // Get all product from store
         database.statement("SELECT * FROM antiqes WHERE store_id = ?");
         database.passInt(1);
         ResultSet result = database.getResult();
-
         // Print out all products
         while( result.next() ) {
             int    id   = result.getInt("antiqe_id");
@@ -75,16 +77,13 @@ public class StoreOwnerController {
             int price = result.getInt("price");
             ProductContainer.getChildren().add( this.createProductListItem(id,name,picurl,description,price) );
         }
-
         database.close();
     }
 
     // Add item method
     @FXML
-    protected void addItemClick(ActionEvent event) throws IOException, SQLException {
-
+    protected void addItemClick(ActionEvent event) throws SQLException {
         String[] input = new String[]{ this.ItemName.getText(), this.ItemDescription.getText(), this.ItemPicUrl.getText(), this.ItemPrice.getText() };
-
         // Validate inputs
         if ( validator.stringsEmpty(input) ) {
             MessageLabel.setStyle("-fx-text-fill: red");
@@ -101,7 +100,6 @@ public class StoreOwnerController {
         else { // If everything is validated, process the form
 
             int price = Integer.parseInt(input[3].replaceAll("\\s+", ""));
-
             database.statement("INSERT INTO antiqes VALUES ( NULL, ?, ?, ?, ?, ? )");
             database.passString(input[0]);
             database.passString(input[1]);
@@ -114,18 +112,26 @@ public class StoreOwnerController {
                 MessageLabel.setText("Product inserted to store!");
                 loadProducts();
             }
-
             database.close();
-
             // Empty form
             ItemName.setText("");
             ItemDescription.setText("");
             ItemPicUrl.setText("");
             ItemPrice.setText("");
-
         }
     }
 
+    @FXML
+    protected void backButtonClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader root = new FXMLLoader(Application.class.getResource("authentication.fxml"));
+        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root.load(), 750, 500);
+        stage.setScene(scene);
+        stage.show();
+        //ApplicationController controller = root.getController();
+    }
+
+    @FXML
     // Add item method
     public void deleteClick(ActionEvent actionEvent) throws SQLException {
         Button button = (Button)(actionEvent.getSource());
@@ -137,11 +143,9 @@ public class StoreOwnerController {
     }
 
     // Product list item creator
-
     public HBox createProductListItem(int id, String name, String picurl, String description, int price ) {
 
         HBox container = new HBox();
-        //container.setStyle("-fx-border-color:rgb(200,200,200)");
         container.setPrefWidth(280);
         container.setSpacing(5);
 
@@ -163,7 +167,6 @@ public class StoreOwnerController {
         Label price_label = new Label();
         price_label.setText(price + "$");
         price_label.setStyle("-fx-text-fill:green;-fx-font-size:10");
-
         // Delete button
         Button delete_button = new Button();
         delete_button.setText("Delete");
@@ -181,16 +184,5 @@ public class StoreOwnerController {
 
         return container;
     }
-
-
-    /* REDIRECT
-    FXMLLoader root = new FXMLLoader(Application.class.getResource("authentication.fxml"));
-    Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-    Scene scene = new Scene(root.load(), 750, 500);
-    stage.setScene(scene);
-    stage.show();
-    ApplicationController controller = root.getController();
-    controller.shout();
-    */
 
 }

@@ -27,7 +27,6 @@ public class ComponentCreator {
     public HBox createProductListItem(int id, String name, String picurl, String description, int price ) {
 
         HBox container = new HBox();
-        //container.setStyle("-fx-border-color:rgb(200,200,200)");
         container.setPrefWidth(280);
         container.setSpacing(5);
 
