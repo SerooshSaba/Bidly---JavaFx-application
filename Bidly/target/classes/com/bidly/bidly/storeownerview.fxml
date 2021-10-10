@@ -5,7 +5,7 @@
 <VBox alignment="TOP_CENTER" spacing="25.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidly.bidly.StoreOwnerController">
 
     <HBox alignment="CENTER_LEFT" >
-        <Button text="BACK" onAction="#backButtonClick" />
+        <Button text="Logout" onAction="#logoutClick" />
     </HBox>
 
     <VBox alignment="CENTER" spacing="25.0" >

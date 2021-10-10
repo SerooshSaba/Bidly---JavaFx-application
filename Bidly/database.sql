@@ -38,12 +38,4 @@ CREATE TABLE bids (
                       FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE payments (
-                          payment_id  INTEGER NOT NULL PRIMARY KEY,
-                          amount      INTEGER NOT NULL,
-                          date        TEXT NOT NULL,
-                          store_id    INTEGER NOT NULL,
-                          FOREIGN KEY (store_id) REFERENCES stores(store_id) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
 -- INSERT

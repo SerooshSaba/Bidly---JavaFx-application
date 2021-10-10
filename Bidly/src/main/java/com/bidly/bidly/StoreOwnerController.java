@@ -122,7 +122,7 @@ public class StoreOwnerController {
     }
 
     @FXML
-    protected void backButtonClick(ActionEvent actionEvent) throws IOException {
+    protected void logoutClick(ActionEvent actionEvent) throws IOException {
         FXMLLoader root = new FXMLLoader(Application.class.getResource("authentication.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root.load(), 750, 500);
@@ -144,6 +144,8 @@ public class StoreOwnerController {
 
     // Product list item creator
     public HBox createProductListItem(int id, String name, String picurl, String description, int price ) {
+
+        System.out.println(picurl);
 
         HBox container = new HBox();
         container.setPrefWidth(280);

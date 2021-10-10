@@ -47,7 +47,11 @@ public class ApplicationController {
             stage.show();
         }
         else {
-            System.out.println("Logging in as bidder!");
+            FXMLLoader root = new FXMLLoader(Application.class.getResource("bidderView.fxml"));
+            Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root.load(), 850, 800);
+            stage.setScene(scene);
+            stage.show();
         }
 
     }
