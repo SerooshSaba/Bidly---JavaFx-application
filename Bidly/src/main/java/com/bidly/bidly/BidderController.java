@@ -22,43 +22,102 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.EventListener;
 
-// TODO Create a payment processor windo
-
 public class BidderController {
+
+    // Global variables
+    private int ANTIQE_ID;
+    private int BID_AMOUNT;
+    private Label BID_MESSAGE;
+    private Label CURRENT_BID_OUTPUT;
 
     @FXML
     private ImageView logo;
+
+    @FXML
+    private ScrollPane productOverviewContainer;
+    @FXML
+    private VBox productListingContainer;
+
     @FXML
     private VBox paymentContainer;
+    @FXML
+    private ImageView paymentProcessorsImage;
+    @FXML
+    private TextField cardNumber;
+    @FXML
+    private TextField expirationDate;
+    @FXML
+    private TextField securityCode;
+
+    @FXML
+    private Button PayButton;
 
     @FXML
     private VBox paymentSuccessMessageContainer;
     @FXML
-    private ImageView successIcon;
-
-    @FXML
     private VBox paymentFailureMessageContainer;
-    @FXML
-    private VBox productListingContainer;
 
     Database database = new Database();
 
     public void initialize() throws SQLException {
-        // Load nav logo
+        // Load navigation logo
         Image logoImage = new Image(String.valueOf(Application.class.getResource("/images/logo.PNG")));
         logo.setPreserveRatio(true);
         logo.setFitWidth(75);
         logo.setTranslateX(-30);
         logo.setImage(logoImage);
 
-        // Load success logo
-        Image successImage = new Image(String.valueOf(Application.class.getResource("/images/logo.PNG")));
-        successIcon = new ImageView(successImage);
+        //// Load paymentSuccessMessageContainer
+        // Image
+        Image successImage = new Image(String.valueOf(Application.class.getResource("/images/success.PNG")));
+        ImageView successIcon = new ImageView(successImage);
         successIcon.setPreserveRatio(true);
         successIcon.setFitWidth(75);
-        successIcon.setTranslateX(-30);
+        successIcon.setImage(successImage);
+        // Label
+        Label successLabel = new Label("Payment processed successfully.");
+        successLabel.setStyle("-fx-text-fill:green");
+        // Back button
+        Button success_container_back_button = new Button("Back to bidding");
+        success_container_back_button.setOnAction(e -> {
+            paymentSuccessMessageContainer.setVisible(false);
+            paymentSuccessMessageContainer.setManaged(false);
+            paymentFailureMessageContainer.setVisible(false);
+            paymentFailureMessageContainer.setManaged(false);
+            productOverviewContainer.setVisible(true);
+            productOverviewContainer.setManaged(true);
+        });
+        paymentSuccessMessageContainer.getChildren().addAll(successIcon,successLabel,success_container_back_button);
 
-        // Get all products on platform
+        //// Load paymentFailureMessageContainer
+        // Image
+        Image failureImage = new Image(String.valueOf(Application.class.getResource("/images/failure.PNG")));
+        ImageView failureIcon = new ImageView(failureImage);
+        failureIcon.setPreserveRatio(true);
+        failureIcon.setFitWidth(75);
+        failureIcon.setImage(failureImage);
+        // Label
+        Label failureLabel = new Label("Payment failed to process.");
+        failureLabel.setStyle("-fx-text-fill:red");
+        // Back button
+        Button failure_container_back_button = new Button("Back to bidding");
+        failure_container_back_button.setOnAction(e -> {
+            paymentSuccessMessageContainer.setVisible(false);
+            paymentSuccessMessageContainer.setManaged(false);
+            paymentFailureMessageContainer.setVisible(false);
+            paymentFailureMessageContainer.setManaged(false);
+            productOverviewContainer.setVisible(true);
+            productOverviewContainer.setManaged(true);
+        });
+        paymentFailureMessageContainer.getChildren().addAll( failureIcon, failureLabel, failure_container_back_button );
+
+        //// Load payment processor popup container
+        Image processorsImage = new Image(String.valueOf(Application.class.getResource("/images/paymentprocessors.JPG")));
+        paymentProcessorsImage.setImage(processorsImage);
+        paymentProcessorsImage.setPreserveRatio(true);
+        paymentProcessorsImage.setFitWidth(175);
+
+        //// Get all products on platform
         String query_string = "SELECT antiqes.antiqe_id, antiqes.name, antiqes.description, antiqes.pic_url, antiqes.price, MAX(bids.amount) AS last_bid, stores.name AS storename FROM antiqes " +
                               "LEFT OUTER JOIN bids ON bids.antiqe_id = antiqes.antiqe_id " +
                               "INNER JOIN stores ON antiqes.store_id = stores.store_id " +
@@ -71,12 +130,9 @@ public class BidderController {
         while ( result.next() ) {
             if ( product % 4 == 0 && product != 0 ) {
                 row.getChildren().add( createProductView( result.getInt("antiqe_id"), result.getString("name"), result.getString("description"), result.getString("pic_url"), result.getInt("price"), result.getInt("last_bid"), result.getString("storename") ) );
-                // Send container to main container
                 productListingContainer.getChildren().add(row);
-                // Create new empty container
                 row = createListRow();
             } else {
-                // just add product
                 row.getChildren().add( createProductView( result.getInt("antiqe_id"), result.getString("name"), result.getString("description"), result.getString("pic_url"), result.getInt("price"), result.getInt("last_bid"), result.getString("storename") ) );
             }
             product++;
@@ -86,63 +142,119 @@ public class BidderController {
     }
 
     @FXML
-    protected void logoutClick(ActionEvent event) throws IOException {
-        FXMLLoader root = new FXMLLoader(Application.class.getResource("authentication.fxml"));
-        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root.load(), 750, 500);
-        stage.setScene(scene);
-        stage.show();
-    }
+    private void bidClick( int antiqe_id, int current_bid_price, int bid_amount, Label bid_message, Label current_bid_output ) throws SQLException {
 
-    private void bidClick( int antiqe_id, int current_bid_price, int bid_amount, Label bid_message ) throws SQLException {
         // Find if there are bids for this product
         database.statement("SELECT COUNT(*) AS bids FROM bids WHERE antiqe_id = ? ");
         database.passInt(antiqe_id);
         ResultSet result = database.getResult();
-
         int bids = Integer.parseInt(result.getString("bids"));
         database.close();
 
-        if ( bids == 0 ) { // If there are no bids
-            // If bid is higher than the start bid price
+        // If there are no bids
+        if ( bids == 0 ) {
+            // If bid is higher than the start bid price, process the bid further
             if ( bid_amount > current_bid_price ) {
-                database.statement("INSERT INTO bids VALUES (NULL,?,?)");
-                database.passInt(bid_amount);
-                database.passInt(antiqe_id);
-                database.execute();
-                database.close();
-                bid_message.setText("Bid success!");
-                bid_message.setStyle("-fx-font-size:8.5;-fx-text-fill:green");
-                bid_message.setVisible(true);
+
+                // Toggle payment popup
+                paymentContainer.setVisible(true);
+                paymentContainer.setManaged(true);
+                // Toggle product overview container
+                productOverviewContainer.setVisible(false);
+                productOverviewContainer.setManaged(false);
+
+                // Send the product data to the global data variables
+                this.ANTIQE_ID = antiqe_id;
+                this.BID_AMOUNT = bid_amount;
+                this.BID_MESSAGE = bid_message;
+                this.CURRENT_BID_OUTPUT = current_bid_output;
+
+                // The payment popup will do futher process the data
+
             } else {
-                bid_message.setText("Bid must be higher than previous!");
+                bid_message.setText("Bid must be higher than starting bid price");
                 bid_message.setStyle("-fx-font-size:8.5;-fx-text-fill:red");
                 bid_message.setVisible(true);
             }
-        } else { // If there are bids
+        // If there are bids
+        } else {
 
-            // Find the highest bid for product
+            // Find the highest bid for the selected product
             database.statement("SELECT MAX(amount) as maxbid FROM bids WHERE antiqe_id = ?");
             database.passInt(antiqe_id);
             int highest_bid = database.getResult().getInt("maxbid");
             database.close();
-            // If the current bid is higher then the previous bid, register the bid
+
+            // If the current bid is higher then the previous bid, process the bid further
             if ( bid_amount > highest_bid ) {
-                database.statement("INSERT INTO bids VALUES (NULL,?,?)");
-                database.passInt(bid_amount);
-                database.passInt(antiqe_id);
-                database.execute();
-                database.close();
-                bid_message.setText("Bid success!");
-                bid_message.setStyle("-fx-font-size:8.5;-fx-text-fill:green");
-                bid_message.setVisible(true);
-            // If it is lower, tell the user
+
+                // Toggle payment popup
+                paymentContainer.setVisible(true);
+                paymentContainer.setManaged(true);
+                // Toggle product overview container
+                productOverviewContainer.setVisible(false);
+                productOverviewContainer.setManaged(false);
+
+                // Send the product data to the global data variables
+                this.ANTIQE_ID = antiqe_id;
+                this.BID_AMOUNT = bid_amount;
+                this.BID_MESSAGE = bid_message;
+                this.CURRENT_BID_OUTPUT = current_bid_output;
+
+                // The payment popup will do futher process the data
+
+            // If the current bid is lower than the previous bid, tell the user
             } else {
                 bid_message.setText("Bid must be higher then previous bid");
                 bid_message.setStyle("-fx-font-size:8.5;-fx-text-fill:red");
                 bid_message.setVisible(true);
             }
         }
+    }
+
+    @FXML
+    private void payButtonClick() throws SQLException {
+
+        // Check if the payment information is correct
+        if ( cardNumber.getText().equals("1234 1234 1234 1234") && expirationDate.getText().equals("01/09") && securityCode.getText().equals("321") ) {
+            // Show and hide containers
+            paymentContainer.setVisible(false);
+            paymentContainer.setManaged(false);
+            paymentSuccessMessageContainer.setVisible(true);
+            paymentSuccessMessageContainer.setManaged(true);
+            // Update the bid in the product overview
+            CURRENT_BID_OUTPUT.setText(String.valueOf(BID_AMOUNT)+"$");
+            // Insert the bid into the database system
+            database.statement("INSERT INTO bids VALUES (NULL,?,?)");
+            database.passInt(BID_AMOUNT);
+            database.passInt(ANTIQE_ID);
+            database.execute();
+            database.close();
+            // Bid succeeded message
+            BID_MESSAGE.setText("Bid placed!");
+            BID_MESSAGE.setStyle("-fx-font-size:12.5;-fx-text-fill:green;-fx-font-weight:bold");
+            BID_MESSAGE.setVisible(true);
+        } else {
+            // Show and hide containers
+            paymentContainer.setVisible(false);
+            paymentContainer.setManaged(false);
+            paymentFailureMessageContainer.setVisible(true);
+            paymentFailureMessageContainer.setManaged(true);
+            // Bid failed message in the product container
+            BID_MESSAGE.setText("Payment failed!");
+            BID_MESSAGE.setStyle("-fx-font-size:12.5;-fx-text-fill:red;-fx-font-weight:bold");
+            BID_MESSAGE.setVisible(true);
+        }
+
+    }
+
+    @FXML
+    protected void logoutClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader root = new FXMLLoader(Application.class.getResource("authentication.fxml"));
+        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root.load(), 750, 500);
+        stage.setScene(scene);
+        stage.show();
     }
 
     private HBox createListRow() {
@@ -192,10 +304,10 @@ public class BidderController {
         Label bid_amount = new Label();
         if ( last_bid != 0 ) {
             bid_text.setText( "Last bid: " );
-            bid_amount.setText(String.valueOf(last_bid));
+            bid_amount.setText(String.valueOf(last_bid) + "$");
         } else {
             bid_text.setText( "Starting bid price: " );
-            bid_amount.setText(String.valueOf(price));
+            bid_amount.setText(String.valueOf(price) + "$");
         }
 
         bid_amount.setStyle("-fx-text-fill:green");
@@ -219,9 +331,9 @@ public class BidderController {
                 int bid_amount_converted = Integer.parseInt( bid_field.getText() );
 
                 if ( last_bid != 0 ) {
-                    this.bidClick( product_id, last_bid, bid_amount_converted, message_output );
+                    this.bidClick( product_id, last_bid, bid_amount_converted, message_output, bid_amount );
                 } else {
-                    this.bidClick( product_id, price, bid_amount_converted, message_output );
+                    this.bidClick( product_id, price, bid_amount_converted, message_output, bid_amount );
                 }
 
             } catch (NumberFormatException | SQLException exception ) {
