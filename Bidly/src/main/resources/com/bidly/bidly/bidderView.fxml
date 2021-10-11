@@ -12,7 +12,7 @@
 
     <!-- Nav bar -->
     <HBox>
-        <Button fx:id="logoutButton" >Logout</Button>
+        <Button fx:id="logoutButton" onAction="#logoutClick">Logout</Button>
         <HBox alignment="CENTER" HBox.hgrow="ALWAYS" >
             <ImageView fx:id="logo" />
         </HBox>
@@ -25,7 +25,9 @@
             <VBox VBox.vgrow="ALWAYS" fx:id="productListingContainer" />
         </ScrollPane>
 
-        <VBox fx:id="paymentContainer" visible="false" />
+        <VBox fx:id="paymentContainer" visible="false" >
+            <Label>Pay</Label>
+        </VBox>
 
         <VBox fx:id="paymentSuccessMessageContainer" visible="false" />
 
