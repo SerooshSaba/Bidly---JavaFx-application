@@ -69,13 +69,11 @@ public class AdminController {
             ProductAmount.setText( products + " Products" );
         }
 
-        // TODO IMPLEMENT PAYMENTS
         EarnedAmount.setText("2445$");
 
     }
 
     //@FXML
     //protected void Click(ActionEvent event) {}
-
 
 }

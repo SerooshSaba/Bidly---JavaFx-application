@@ -60,7 +60,4 @@ stores.name AS storename
 FROM antiqes
 LEFT OUTER JOIN bids ON bids.antiqe_id = antiqes.antiqe_id
 INNER JOIN stores ON antiqes.store_id = stores.store_id
-
-WHERE antiqes.antiqe_id = 3
-
 GROUP BY antiqes.antiqe_id;

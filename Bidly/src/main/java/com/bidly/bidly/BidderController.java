@@ -22,16 +22,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.EventListener;
 
+// TODO Create a payment processor windo
+
 public class BidderController {
 
     @FXML
     private ImageView logo;
     @FXML
-    private ScrollPane productOverviewContainer;
-    @FXML
     private VBox paymentContainer;
+
     @FXML
     private VBox paymentSuccessMessageContainer;
+    @FXML
+    private ImageView successIcon;
+
     @FXML
     private VBox paymentFailureMessageContainer;
     @FXML
@@ -40,14 +44,25 @@ public class BidderController {
     Database database = new Database();
 
     public void initialize() throws SQLException {
-        // Load logo
+        // Load nav logo
         Image logoImage = new Image(String.valueOf(Application.class.getResource("/images/logo.PNG")));
         logo.setPreserveRatio(true);
         logo.setFitWidth(75);
         logo.setTranslateX(-30);
         logo.setImage(logoImage);
+
+        // Load success logo
+        Image successImage = new Image(String.valueOf(Application.class.getResource("/images/logo.PNG")));
+        successIcon = new ImageView(successImage);
+        successIcon.setPreserveRatio(true);
+        successIcon.setFitWidth(75);
+        successIcon.setTranslateX(-30);
+
         // Get all products on platform
-        String query_string = "SELECT antiqes.antiqe_id, antiqes.name, antiqes.description, antiqes.pic_url, antiqes.price, stores.name AS storename FROM antiqes INNER JOIN stores on antiqes.store_id = stores.store_id";
+        String query_string = "SELECT antiqes.antiqe_id, antiqes.name, antiqes.description, antiqes.pic_url, antiqes.price, MAX(bids.amount) AS last_bid, stores.name AS storename FROM antiqes " +
+                              "LEFT OUTER JOIN bids ON bids.antiqe_id = antiqes.antiqe_id " +
+                              "INNER JOIN stores ON antiqes.store_id = stores.store_id " +
+                              "GROUP BY antiqes.antiqe_id;";
         database.statement(query_string);
         ResultSet result = database.getResult();
         // Render products
@@ -55,14 +70,14 @@ public class BidderController {
         int product = 1;
         while ( result.next() ) {
             if ( product % 4 == 0 && product != 0 ) {
-                row.getChildren().add( createProductView( result.getInt("antiqe_id"), result.getString("name"), result.getString("description"), result.getString("pic_url"), result.getInt("price"), result.getString("storename") ) );
+                row.getChildren().add( createProductView( result.getInt("antiqe_id"), result.getString("name"), result.getString("description"), result.getString("pic_url"), result.getInt("price"), result.getInt("last_bid"), result.getString("storename") ) );
                 // Send container to main container
                 productListingContainer.getChildren().add(row);
                 // Create new empty container
                 row = createListRow();
             } else {
                 // just add product
-                row.getChildren().add( createProductView( result.getInt("antiqe_id"), result.getString("name"), result.getString("description"), result.getString("pic_url"), result.getInt("price"), result.getString("storename") ) );
+                row.getChildren().add( createProductView( result.getInt("antiqe_id"), result.getString("name"), result.getString("description"), result.getString("pic_url"), result.getInt("price"), result.getInt("last_bid"), result.getString("storename") ) );
             }
             product++;
         }
@@ -79,7 +94,7 @@ public class BidderController {
         stage.show();
     }
 
-    private void bidClick( int antiqe_id, int start_bid_price, int bid_amount, Label bid_message ) throws SQLException {
+    private void bidClick( int antiqe_id, int current_bid_price, int bid_amount, Label bid_message ) throws SQLException {
         // Find if there are bids for this product
         database.statement("SELECT COUNT(*) AS bids FROM bids WHERE antiqe_id = ? ");
         database.passInt(antiqe_id);
@@ -90,7 +105,7 @@ public class BidderController {
 
         if ( bids == 0 ) { // If there are no bids
             // If bid is higher than the start bid price
-            if ( bid_amount > start_bid_price ) {
+            if ( bid_amount > current_bid_price ) {
                 database.statement("INSERT INTO bids VALUES (NULL,?,?)");
                 database.passInt(bid_amount);
                 database.passInt(antiqe_id);
@@ -111,6 +126,7 @@ public class BidderController {
             database.passInt(antiqe_id);
             int highest_bid = database.getResult().getInt("maxbid");
             database.close();
+            // If the current bid is higher then the previous bid, register the bid
             if ( bid_amount > highest_bid ) {
                 database.statement("INSERT INTO bids VALUES (NULL,?,?)");
                 database.passInt(bid_amount);
@@ -119,6 +135,11 @@ public class BidderController {
                 database.close();
                 bid_message.setText("Bid success!");
                 bid_message.setStyle("-fx-font-size:8.5;-fx-text-fill:green");
+                bid_message.setVisible(true);
+            // If it is lower, tell the user
+            } else {
+                bid_message.setText("Bid must be higher then previous bid");
+                bid_message.setStyle("-fx-font-size:8.5;-fx-text-fill:red");
                 bid_message.setVisible(true);
             }
         }
@@ -131,7 +152,7 @@ public class BidderController {
         return row;
     }
 
-    private VBox createProductView( int product_id, String productname, String desc, String picurl, int price, String store_name ) {
+    private VBox createProductView( int product_id, String productname, String desc, String picurl, int price, int last_bid, String store_name ) {
 
         // Create main container
         VBox container = new VBox();
@@ -163,11 +184,20 @@ public class BidderController {
         description.setMaxWidth(175);
         description.setWrapText(true);
 
-        // Label for latest bid
+        // Label for start price / last bid
         HBox bid_data_container = new HBox();
         bid_data_container.setAlignment(Pos.CENTER);
-        Label bid_text = new Label("Current bid: ");
-        Label bid_amount = new Label("2000$");
+
+        Label bid_text = new Label();
+        Label bid_amount = new Label();
+        if ( last_bid != 0 ) {
+            bid_text.setText( "Last bid: " );
+            bid_amount.setText(String.valueOf(last_bid));
+        } else {
+            bid_text.setText( "Starting bid price: " );
+            bid_amount.setText(String.valueOf(price));
+        }
+
         bid_amount.setStyle("-fx-text-fill:green");
         bid_data_container.getChildren().addAll(bid_text,bid_amount);
 
@@ -187,7 +217,13 @@ public class BidderController {
         bid_button.setOnAction(e -> {
             try {
                 int bid_amount_converted = Integer.parseInt( bid_field.getText() );
-                this.bidClick( product_id, price, bid_amount_converted, message_output );
+
+                if ( last_bid != 0 ) {
+                    this.bidClick( product_id, last_bid, bid_amount_converted, message_output );
+                } else {
+                    this.bidClick( product_id, price, bid_amount_converted, message_output );
+                }
+
             } catch (NumberFormatException | SQLException exception ) {
                 message_output.setVisible(true);
                 message_output.setText("Input a number");

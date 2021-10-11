@@ -29,7 +29,11 @@
             <Label>Pay</Label>
         </VBox>
 
-        <VBox fx:id="paymentSuccessMessageContainer" visible="false" />
+        <VBox alignment="CENTER" fx:id="paymentSuccessMessageContainer" style="-fx-background-color:red" visible="false" >
+            <ImageView fx:id="SuccessIcon" />
+            <Label text="Payment succeeded!" />
+            <Button fx:id="continueBiddingButton" text="Continue budding" />
+        </VBox>
 
         <VBox fx:id="paymentFailureMessageContainer" visible="false" />
 
