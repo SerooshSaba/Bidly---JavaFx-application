@@ -3,10 +3,7 @@ package com.bidly.bidly;
 import Utility.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -15,16 +12,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.EventListener;
 
-import static java.lang.constant.ConstantDescs.NULL;
-
-public class BidderController {
+public class BidderController extends Controller {
 
     // Global variables
     private int ANTIQE_ID;
@@ -251,11 +244,7 @@ public class BidderController {
 
     @FXML
     protected void logoutClick(ActionEvent actionEvent) throws IOException {
-        FXMLLoader root = new FXMLLoader(Application.class.getResource("authentication.fxml"));
-        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root.load(), 750, 500);
-        stage.setScene(scene);
-        stage.show();
+        this.changeView(actionEvent,"authenticationView.fxml");
     }
 
     private HBox createListRow() {

@@ -40,7 +40,7 @@ public class ApplicationController {
             stage.show();
         }
         else if ( UserSelection.equals("Auctioneer") ) {
-            FXMLLoader root = new FXMLLoader(Application.class.getResource("storeownerview.fxml"));
+            FXMLLoader root = new FXMLLoader(Application.class.getResource("auctioneerView.fxml"));
             Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root.load(), 850, 800);
             stage.setScene(scene);

@@ -4,10 +4,7 @@ import Utility.DataValidator;
 import Utility.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -15,13 +12,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class StoreOwnerController {
+public class AuctioneerController extends Controller {
 
     // - - - Store title label
     @FXML
@@ -123,12 +119,7 @@ public class StoreOwnerController {
 
     @FXML
     protected void logoutClick(ActionEvent actionEvent) throws IOException {
-        FXMLLoader root = new FXMLLoader(Application.class.getResource("authentication.fxml"));
-        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root.load(), 750, 500);
-        stage.setScene(scene);
-        stage.show();
-        //ApplicationController controller = root.getController();
+        this.changeView(actionEvent,"authenticationView.fxml");
     }
 
     @FXML
