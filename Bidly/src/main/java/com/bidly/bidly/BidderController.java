@@ -22,6 +22,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.EventListener;
 
+import static java.lang.constant.ConstantDescs.NULL;
+
 public class BidderController {
 
     // Global variables
@@ -214,7 +216,6 @@ public class BidderController {
 
     @FXML
     private void payButtonClick() throws SQLException {
-
         // Check if the payment information is correct
         if ( cardNumber.getText().equals("1234 1234 1234 1234") && expirationDate.getText().equals("01/09") && securityCode.getText().equals("321") ) {
             // Show and hide containers
