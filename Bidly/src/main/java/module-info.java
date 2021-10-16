@@ -5,6 +5,8 @@ module com.bidly.bidly {
     requires java.sql;
 
 
-    opens com.bidly.bidly to javafx.fxml;
-    exports com.bidly.bidly;
+    opens com.bidly.Core to javafx.fxml;
+    exports com.bidly.Core;
+    exports com.bidly.Core.Controller;
+    opens com.bidly.Core.Controller to javafx.fxml;
 }
