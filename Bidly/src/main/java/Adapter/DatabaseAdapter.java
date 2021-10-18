@@ -1,5 +1,7 @@
 package Adapter;
 import com.bidly.Core.Model.Antiqe;
+import com.bidly.Core.Model.Store;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -89,10 +91,30 @@ public class DatabaseAdapter {
         return result;
     }
 
+    public ArrayList<Store> getStores(  ) throws SQLException {
+        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+        this.statement = this.connection.prepareStatement("SELECT * FROM stores");
+        ResultSet result = this.statement.executeQuery();
+        ArrayList<Store> stores = new ArrayList();
+        while ( result.next() ) {
+            stores.add( new Store( result.getInt("store_id"), result.getString("name") ) );
+        }
+        this.connection.close();
+        return stores;
+    }
+
     public void deleteAntiqe( String antiqe_id ) throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
         this.statement = this.connection.prepareStatement("DELETE FROM antiqes WHERE antiqe_id = ?");
         this.statement.setInt(1,Integer.parseInt(antiqe_id));
+        this.statement.executeUpdate();
+        this.connection.close();
+    }
+
+    public void deleteStore( int store_id ) throws SQLException {
+        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+        this.statement = this.connection.prepareStatement("DELETE FROM stores WHERE store_id = ?");
+        this.statement.setInt(1,store_id);
         this.statement.executeUpdate();
         this.connection.close();
     }

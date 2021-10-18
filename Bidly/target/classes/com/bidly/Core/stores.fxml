@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="40.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.bidly.Core.Controller.StoresController">
+
+    <HBox alignment="CENTER_LEFT" >
+        <Button text="Back" onAction="#backClick">Back</Button>
+    </HBox>
+
+    <VBox alignment="CENTER" spacing="25.0" >
+
+        <Label style="-fx-font-size: 20">All stores on the platform:</Label>
+
+        <ScrollPane minHeight="150" maxWidth="250" style="-fx-border-style:none;-fx-border-color:black;-fx-border-width:0;-fx-focus-color:transparent" >
+            <VBox fx:id="storeListingContainer"/>
+        </ScrollPane>
+
+    </VBox>
+
+</VBox>

@@ -3,13 +3,20 @@ package com.bidly.Core.Controller;
 import Adapter.DatabaseAdapter;
 
 import com.bidly.Core.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.sql.SQLException;
 
-public class AdminController {
+public class AdminController extends Controller {
 
     // Images
     @FXML
@@ -63,7 +70,18 @@ public class AdminController {
         }
 
         EarnedAmount.setText("2445$"); // TODO !!!!!!!!!!!!
-
     }
+
+
+    @FXML
+    protected void logoutClick(ActionEvent event) throws IOException {
+        this.changeView(event,"authenticationView.fxml", 750, 500 );
+    }
+
+    @FXML
+    protected void storeClick(ActionEvent event) throws IOException {
+        this.changeView(event,"stores.fxml", 750, 500 );
+    }
+
 
 }
