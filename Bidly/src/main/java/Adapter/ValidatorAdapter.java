@@ -1,8 +1,8 @@
-package com.bidly.Core.Utility;
+package Adapter;
 
 import javafx.scene.image.Image;
 
-public class DataValidator {
+public class ValidatorAdapter {
 
     // If one string in array is empty, return true
     public boolean stringsEmpty( String[] strings ) {

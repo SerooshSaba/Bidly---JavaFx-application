@@ -4,6 +4,7 @@ import Adapter.DatabaseAdapter;
 import Adapter.PaymentServiceAdapter;
 
 import com.bidly.Core.Application;
+import com.bidly.Core.Model.Antiqe;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -17,8 +18,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class BidderController extends Controller {
 
@@ -118,38 +119,25 @@ public class BidderController extends Controller {
         paymentProcessorsImage.setFitWidth(175);
 
         //// Get all products on platform
-        String query_string = "SELECT antiqes.antiqe_id, antiqes.name, antiqes.description, antiqes.pic_url, antiqes.price, MAX(bids.amount) AS last_bid, stores.name AS storename FROM antiqes " +
-                              "LEFT OUTER JOIN bids ON bids.antiqe_id = antiqes.antiqe_id " +
-                              "INNER JOIN stores ON antiqes.store_id = stores.store_id " +
-                              "GROUP BY antiqes.antiqe_id;";
-        databaseAdapter.statement(query_string);
-        ResultSet result = databaseAdapter.getResult();
-        // Render products
+        ArrayList<Antiqe> products = this.databaseAdapter.getAllProducts();
         HBox row = createListRow();
-        int product = 1;
-        while ( result.next() ) {
-            if ( product % 4 == 0 && product != 0 ) {
-                row.getChildren().add( createProductView( result.getInt("antiqe_id"), result.getString("name"), result.getString("description"), result.getString("pic_url"), result.getInt("price"), result.getInt("last_bid"), result.getString("storename") ) );
+        for ( int i = 0; i < products.size(); i++ ) {
+            if ( i % 3 == 0 && i != 0 ) {
+                row.getChildren().add( createProductView( products.get(i) ) );
                 productListingContainer.getChildren().add(row);
                 row = createListRow();
             } else {
-                row.getChildren().add( createProductView( result.getInt("antiqe_id"), result.getString("name"), result.getString("description"), result.getString("pic_url"), result.getInt("price"), result.getInt("last_bid"), result.getString("storename") ) );
+                row.getChildren().add( createProductView( products.get(i) ) );
             }
-            product++;
         }
         productListingContainer.getChildren().add(row);
-        databaseAdapter.close();
+
     }
 
     @FXML
     private void bidClick( int antiqe_id, int current_bid_price, int bid_amount, Label bid_message, Label current_bid_output ) throws SQLException {
 
-        // Find if there are bids for this product
-        databaseAdapter.statement("SELECT COUNT(*) AS bids FROM bids WHERE antiqe_id = ? ");
-        databaseAdapter.passInt(antiqe_id);
-        ResultSet result = databaseAdapter.getResult();
-        int bids = Integer.parseInt(result.getString("bids"));
-        databaseAdapter.close();
+        int bids = databaseAdapter.getAmountOfBids( antiqe_id );
 
         // If there are no bids
         if ( bids == 0 ) {
@@ -168,7 +156,6 @@ public class BidderController extends Controller {
                 this.BID_AMOUNT = bid_amount;
                 this.BID_MESSAGE = bid_message;
                 this.CURRENT_BID_OUTPUT = current_bid_output;
-
                 // The payment popup will do futher process the data
 
             } else {
@@ -179,11 +166,8 @@ public class BidderController extends Controller {
         // If there are bids
         } else {
 
-            // Find the highest bid for the selected product
-            databaseAdapter.statement("SELECT MAX(amount) as maxbid FROM bids WHERE antiqe_id = ?");
-            databaseAdapter.passInt(antiqe_id);
-            int highest_bid = databaseAdapter.getResult().getInt("maxbid");
-            databaseAdapter.close();
+            // Find the highest bid for the selected product //
+            int highest_bid = databaseAdapter.getHighestBidOfAntiqe(antiqe_id);
 
             // If the current bid is higher then the previous bid, process the bid further
             if ( bid_amount > highest_bid ) {
@@ -200,7 +184,6 @@ public class BidderController extends Controller {
                 this.BID_AMOUNT = bid_amount;
                 this.BID_MESSAGE = bid_message;
                 this.CURRENT_BID_OUTPUT = current_bid_output;
-
                 // The payment popup will do futher process the data
 
             // If the current bid is lower than the previous bid, tell the user
@@ -225,12 +208,8 @@ public class BidderController extends Controller {
             // Update the bid in the product overview
             CURRENT_BID_OUTPUT.setText(String.valueOf(BID_AMOUNT)+"$");
             // Insert the bid into the databaseAdapter system
-            databaseAdapter.statement("INSERT INTO bids VALUES (NULL,?,?)");
-            databaseAdapter.passInt(BID_AMOUNT);
-            databaseAdapter.passInt(ANTIQE_ID);
-            databaseAdapter.execute();
-            databaseAdapter.close();
-            // Bid succeeded message
+            databaseAdapter.insertBid( BID_AMOUNT, ANTIQE_ID );
+            // Display bid succeeded message
             BID_MESSAGE.setText("Bid placed!");
             BID_MESSAGE.setStyle("-fx-font-size:12.5;-fx-text-fill:green;-fx-font-weight:bold");
             BID_MESSAGE.setVisible(true);
@@ -245,12 +224,11 @@ public class BidderController extends Controller {
             BID_MESSAGE.setStyle("-fx-font-size:12.5;-fx-text-fill:red;-fx-font-weight:bold");
             BID_MESSAGE.setVisible(true);
         }
-
     }
 
     @FXML
     protected void logoutClick(ActionEvent actionEvent) throws IOException {
-        this.changeView(actionEvent,"authenticationView.fxml");
+        this.changeView(actionEvent,"authenticationView.fxml", 500, 500 );
     }
 
     private HBox createListRow() {
@@ -260,7 +238,7 @@ public class BidderController extends Controller {
         return row;
     }
 
-    private VBox createProductView( int product_id, String productname, String desc, String picurl, int price, int last_bid, String store_name ) {
+    private VBox createProductView( Antiqe antiqe ) {
 
         // Create main container
         VBox container = new VBox();
@@ -271,21 +249,21 @@ public class BidderController extends Controller {
         container.setAlignment(Pos.CENTER);
 
         // Label for store name
-        Label storename = new Label(store_name);
+        Label storename = new Label( antiqe.getStoreName() );
         storename.setStyle("-fx-font-size:10");
 
         // Label for product name
-        Label name = new Label( productname );
+        Label name = new Label( antiqe.getName() );
         name.setStyle("-fx-font-size:12.5;-fx-font-weight:bold");
 
         // ImageView for image of product
-        Image image_object = new Image(picurl,true);
+        Image image_object = new Image( antiqe.getPic_url() ,true);
         ImageView image = new ImageView(image_object);
         image.setFitHeight(75);
         image.setFitWidth(75);
 
         // Label for description
-        Label description = new Label( desc );
+        Label description = new Label(antiqe.getDescription() );
         description.setStyle("-fx-font-size:10");
         description.setAlignment(Pos.CENTER);
         description.setMaxHeight(50);
@@ -298,12 +276,12 @@ public class BidderController extends Controller {
 
         Label bid_text = new Label();
         Label bid_amount = new Label();
-        if ( last_bid != 0 ) {
+        if ( antiqe.getLast_bid_price() != 0 ) {
             bid_text.setText( "Last bid: " );
-            bid_amount.setText(String.valueOf(last_bid) + "$");
+            bid_amount.setText(String.valueOf(antiqe.getLast_bid_price()) + "$");
         } else {
             bid_text.setText( "Starting bid price: " );
-            bid_amount.setText(String.valueOf(price) + "$");
+            bid_amount.setText(String.valueOf( antiqe.getPrice() ) + "$");
         }
 
         bid_amount.setStyle("-fx-text-fill:green");
@@ -326,10 +304,10 @@ public class BidderController extends Controller {
             try {
                 int bid_amount_converted = Integer.parseInt( bid_field.getText() );
 
-                if ( last_bid != 0 ) {
-                    this.bidClick( product_id, last_bid, bid_amount_converted, message_output, bid_amount );
+                if ( antiqe.getLast_bid_price() != 0 ) {
+                    this.bidClick( antiqe.getAntiqe_id(), antiqe.getLast_bid_price(), bid_amount_converted, message_output, bid_amount );
                 } else {
-                    this.bidClick( product_id, price, bid_amount_converted, message_output, bid_amount );
+                    this.bidClick( antiqe.getAntiqe_id(), antiqe.getPrice(), bid_amount_converted, message_output, bid_amount );
                 }
 
             } catch (NumberFormatException | SQLException exception ) {

@@ -10,10 +10,10 @@ import java.io.IOException;
 
 public abstract class Controller {
 
-    public void changeView(ActionEvent actionEvent, String url) throws IOException {
+    public void changeView(ActionEvent actionEvent, String url, int width, int height ) throws IOException {
         FXMLLoader root = new FXMLLoader(Application.class.getResource(url));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root.load(), 750, 500);
+        Scene scene = new Scene(root.load(), width, height);
         stage.setScene(scene);
         stage.show();
     }

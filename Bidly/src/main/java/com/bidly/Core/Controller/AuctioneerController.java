@@ -2,7 +2,8 @@ package com.bidly.Core.Controller;
 
 import Adapter.DatabaseAdapter;
 
-import com.bidly.Core.Utility.DataValidator;
+import Adapter.ValidatorAdapter;
+import com.bidly.Core.Model.Antiqe;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -15,12 +16,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-
-// TODO Skap en oversikt over antall produkter det er i butikken
-// TODO Oversikt over hvor mye total bids som er på produktene
-// TODO Lag en edit account seksjon
+import java.util.ArrayList;
 
 public class AuctioneerController extends Controller {
 
@@ -49,35 +46,20 @@ public class AuctioneerController extends Controller {
     private VBox ProductContainer;
 
     DatabaseAdapter databaseAdapter = new DatabaseAdapter();
-    DataValidator validator = new DataValidator();
+    ValidatorAdapter validator = new ValidatorAdapter();
 
     public void initialize() throws SQLException {
-        // Load storename
-        databaseAdapter.statement("SELECT name FROM stores WHERE store_id = ?");
-        databaseAdapter.passInt(1);
-        storeName.setText(databaseAdapter.getResult().getString("name"));
-        databaseAdapter.close();
-        // Load store owner products
-        this.loadProducts();
+        // Load name and products of store with store_id = 1
+        storeName.setText(databaseAdapter.getStoreName(1));
+        this.loadProducts(1);
     }
 
-    private void loadProducts() throws SQLException {
-        // Empty container
-        ProductContainer.getChildren().clear();
-        // Get all product from store
-        databaseAdapter.statement("SELECT * FROM antiqes WHERE store_id = ?");
-        databaseAdapter.passInt(1);
-        ResultSet result = databaseAdapter.getResult();
-        // Print out all products
-        while( result.next() ) {
-            int    id   = result.getInt("antiqe_id");
-            String name = result.getString("name");
-            String picurl = result.getString("pic_url");
-            String description = result.getString("description");
-            int price = result.getInt("price");
-            ProductContainer.getChildren().add( this.createProductListItem(id,name,picurl,description,price) );
+    private void loadProducts( int store_id ) throws SQLException {
+        this.ProductContainer.getChildren().clear();
+        ArrayList<Antiqe> antiqes = databaseAdapter.getStoreProducts(store_id);
+        for ( Antiqe antiqe : antiqes ) {
+            ProductContainer.getChildren().add( this.createProductListItem( antiqe ) );
         }
-        databaseAdapter.close();
     }
 
     // Add item method
@@ -99,20 +81,12 @@ public class AuctioneerController extends Controller {
         }
         else { // If everything is validated, process the form
 
-            int price = Integer.parseInt(input[3].replaceAll("\\s+", ""));
-            databaseAdapter.statement("INSERT INTO antiqes VALUES ( NULL, ?, ?, ?, ?, ? )");
-            databaseAdapter.passString(input[0]);
-            databaseAdapter.passString(input[1]);
-            databaseAdapter.passString(input[2]);
-            databaseAdapter.passInt(price);
-            databaseAdapter.passInt(1);
-
-            if ( databaseAdapter.execute() ) {
+            if ( databaseAdapter.insertAntiqe( input ) == 1 ) {
                 MessageLabel.setStyle("-fx-text-fill:green");
                 MessageLabel.setText("Product inserted to store!");
-                loadProducts();
+                loadProducts(1);
             }
-            databaseAdapter.close();
+
             // Empty form
             ItemName.setText("");
             ItemDescription.setText("");
@@ -123,24 +97,19 @@ public class AuctioneerController extends Controller {
 
     @FXML
     protected void logoutClick(ActionEvent actionEvent) throws IOException {
-        this.changeView(actionEvent,"authenticationView.fxml");
+        this.changeView(actionEvent,"authenticationView.fxml", 500, 500 );
     }
 
     @FXML
     // Add item method
     public void deleteClick(ActionEvent actionEvent) throws SQLException {
         Button button = (Button)(actionEvent.getSource());
-        this.databaseAdapter.statement("DELETE FROM antiqes WHERE antiqe_id = ?");
-        this.databaseAdapter.passInt(Integer.parseInt(button.getId()));
-        this.databaseAdapter.execute();
-        this.databaseAdapter.close();
-        this.loadProducts();
+        this.databaseAdapter.deleteAntiqe(button.getId());
+        this.loadProducts(1);
     }
 
     // Product list item creator
-    public HBox createProductListItem(int id, String name, String picurl, String description, int price ) {
-
-        System.out.println(picurl);
+    public HBox createProductListItem( Antiqe antiqe ) {
 
         HBox container = new HBox();
         container.setPrefWidth(280);
@@ -148,7 +117,7 @@ public class AuctioneerController extends Controller {
 
         VBox left_image_container = new VBox();
 
-        Image img_obj = new Image(picurl,true);
+        Image img_obj = new Image( antiqe.getPic_url() ,true);
         ImageView image = new ImageView(img_obj);
         image.setFitHeight(50);
         image.setFitWidth(50);
@@ -158,16 +127,16 @@ public class AuctioneerController extends Controller {
 
         // Labels
         Label name_label = new Label();
-        name_label.setText(name);
+        name_label.setText( antiqe.getName() );
         name_label.setStyle("-fx-font-size:12.5;-fx-font-weight:bold");
 
         Label price_label = new Label();
-        price_label.setText(price + "$");
+        price_label.setText( antiqe.getPrice() + "$");
         price_label.setStyle("-fx-text-fill:green;-fx-font-size:10");
         // Delete button
         Button delete_button = new Button();
         delete_button.setText("Delete");
-        delete_button.setId(String.valueOf(id));
+        delete_button.setId(String.valueOf( antiqe.getAntiqe_id() ));
         delete_button.setPadding(new Insets(1));
         delete_button.setOnAction(e -> {
             try {

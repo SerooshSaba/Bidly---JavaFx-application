@@ -48,23 +48,21 @@ public class AdminController {
         PaymentIcon.setImage(money_jpg);
 
         // Load platform data
-        databaseAdapter.statement("SELECT COUNT(*) as platform_stores FROM stores");
-        int stores = databaseAdapter.getResult().getInt("platform_stores");
+        int stores = databaseAdapter.getAmountOfStores();
         if ( stores == 1 ) {
             StoreAmount.setText( String.valueOf(stores) + " Store" );
         } else {
             StoreAmount.setText( String.valueOf(stores) + " Stores" );
         }
 
-        databaseAdapter.statement("SELECT COUNT(*) as platform_products FROM antiqes");
-        int products = databaseAdapter.getResult().getInt("platform_products");
+        int products = databaseAdapter.getAmountOfProducts();
         if ( products == 1 ) {
             ProductAmount.setText( products + " Product" );
         } else {
             ProductAmount.setText( products + " Products" );
         }
 
-        EarnedAmount.setText("2445$");
+        EarnedAmount.setText("2445$"); // TODO !!!!!!!!!!!!
 
     }
 
