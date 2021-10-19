@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class BidderController extends Controller {
 
     // Adapter
-    DatabaseAdapter databaseAdapter = new DatabaseAdapter();
+    DatabaseAdapter databaseAdapter = new DatabaseAdapter("database.sqlite");
     PaymentServiceAdapter paymentService = new PaymentServiceAdapter();
 
     // Globals

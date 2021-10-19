@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class StoresController extends Controller {
 
-    DatabaseAdapter database = new DatabaseAdapter();
+    DatabaseAdapter databaseAdapter = new DatabaseAdapter("database.sqlite");
 
     @FXML
     private VBox storeListingContainer;
@@ -29,7 +29,7 @@ public class StoresController extends Controller {
         // Empty container
         storeListingContainer.getChildren().clear();
         // Get all stores
-        ArrayList<Store> stores = database.getStores();
+        ArrayList<Store> stores = databaseAdapter.getStores();
         for ( Store store : stores ) {
             storeListingContainer.getChildren().add( this.storeListingContainer( store.getStore_id(), store.getName() ) );
         }
@@ -39,7 +39,7 @@ public class StoresController extends Controller {
     // Delete Store
     public void deleteClick(ActionEvent actionEvent) throws SQLException {
         Button button = (Button)(actionEvent.getSource());
-        database.deleteStore(Integer.valueOf(button.getId()));
+        databaseAdapter.deleteStore(Integer.valueOf(button.getId()));
         this.loadStores();
     }
 
@@ -69,11 +69,8 @@ public class StoresController extends Controller {
                 ex.printStackTrace();
             }
         });
-        // Edit button
-        Button edit_button = new Button();
-        edit_button.setText("Edit");
 
-        name_container.getChildren().addAll(name_label, delete_button, edit_button);
+        name_container.getChildren().addAll( name_label, delete_button );
         container.getChildren().addAll(name_container);
 
         return container;
@@ -83,4 +80,5 @@ public class StoresController extends Controller {
     protected void backClick(ActionEvent event) throws IOException {
         this.changeView( event,"adminView.fxml",750,500 );
     }
+
 }

@@ -9,11 +9,16 @@ import java.util.ArrayList;
 // Any database interface <-> This database adapter <-> Application ports
 public class DatabaseAdapter {
 
+    String database_name;
     Connection connection;
     PreparedStatement statement;
 
+    public DatabaseAdapter( String database_name ) {
+        this.database_name = database_name;
+    }
+
     public ArrayList<Antiqe> getAllProducts() throws SQLException {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         String query_string = "SELECT antiqes.antiqe_id, antiqes.name, antiqes.description, antiqes.pic_url, " +
                 "antiqes.price, MAX(bids.amount) AS last_bid, antiqes.store_id, stores.name AS storename FROM antiqes " +
                 "LEFT OUTER JOIN bids ON bids.antiqe_id = antiqes.antiqe_id " +
@@ -31,7 +36,7 @@ public class DatabaseAdapter {
     }
 
     public ArrayList<Antiqe> getStoreProducts( int store_id ) throws SQLException {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT * FROM antiqes WHERE store_id = ?");
         this.statement.setInt(1, store_id );
         ResultSet result = this.statement.executeQuery();
@@ -49,7 +54,7 @@ public class DatabaseAdapter {
     }
 
     public String getStoreName( int store_id ) throws SQLException {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT name FROM stores WHERE store_id = ?");
         this.statement.setInt(1,store_id);
         String name = this.statement.executeQuery().getString("name");
@@ -58,7 +63,7 @@ public class DatabaseAdapter {
     }
 
     public int getAmountOfBids( int antiqe_id ) throws SQLException {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT COUNT(*) AS bids FROM bids WHERE antiqe_id = ? ");
         this.statement.setInt(1,antiqe_id);
         int result = this.statement.executeQuery().getInt("bids");
@@ -67,7 +72,7 @@ public class DatabaseAdapter {
     }
 
     public int getAmountOfStores() throws SQLException {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT COUNT(*) as platform_stores FROM stores");
         int result = this.statement.executeQuery().getInt("platform_stores");
         this.connection.close();
@@ -75,7 +80,7 @@ public class DatabaseAdapter {
     }
 
     public int getAmountOfProducts() throws SQLException {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT COUNT(*) as platform_products FROM antiqes");
         int result = this.statement.executeQuery().getInt("platform_products");
         this.connection.close();
@@ -83,7 +88,7 @@ public class DatabaseAdapter {
     }
 
     public int getHighestBidOfAntiqe( int antiqe_id ) throws SQLException {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT MAX(amount) as highest_bid FROM bids WHERE antiqe_id = ?");
         this.statement.setInt(1, antiqe_id);
         int result = this.statement.executeQuery().getInt("highest_bid");
@@ -91,8 +96,8 @@ public class DatabaseAdapter {
         return result;
     }
 
-    public ArrayList<Store> getStores(  ) throws SQLException {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+    public ArrayList<Store> getStores() throws SQLException {
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT * FROM stores");
         ResultSet result = this.statement.executeQuery();
         ArrayList<Store> stores = new ArrayList();
@@ -104,7 +109,7 @@ public class DatabaseAdapter {
     }
 
     public void deleteAntiqe( String antiqe_id ) throws SQLException {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("DELETE FROM antiqes WHERE antiqe_id = ?");
         this.statement.setInt(1,Integer.parseInt(antiqe_id));
         this.statement.executeUpdate();
@@ -112,7 +117,7 @@ public class DatabaseAdapter {
     }
 
     public void deleteStore( int store_id ) throws SQLException {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("DELETE FROM stores WHERE store_id = ?");
         this.statement.setInt(1,store_id);
         this.statement.executeUpdate();
@@ -120,7 +125,7 @@ public class DatabaseAdapter {
     }
 
     public int insertAntiqe( String[] input ) throws SQLException {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("INSERT INTO antiqes VALUES ( NULL, ?, ?, ?, ?, ? )");
         this.statement.setString(1, input[0] );
         this.statement.setString(2, input[1] );
@@ -134,10 +139,17 @@ public class DatabaseAdapter {
     }
 
     public void insertBid( int bid_amount, int antiqe_id ) throws SQLException {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("INSERT INTO bids VALUES (NULL,?,?)");
         this.statement.setInt(1, bid_amount);
         this.statement.setInt(2, antiqe_id );
+        this.statement.executeUpdate();
+        this.connection.close();
+    }
+
+    public void runQuery( String query ) throws SQLException {
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
+        this.statement = this.connection.prepareStatement(query);
         this.statement.executeUpdate();
         this.connection.close();
     }

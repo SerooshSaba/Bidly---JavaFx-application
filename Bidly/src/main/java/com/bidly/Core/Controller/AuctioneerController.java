@@ -45,7 +45,7 @@ public class AuctioneerController extends Controller {
     @FXML
     private VBox ProductContainer;
 
-    DatabaseAdapter databaseAdapter = new DatabaseAdapter();
+    DatabaseAdapter databaseAdapter = new DatabaseAdapter("database.sqlite");
     ValidatorAdapter validator = new ValidatorAdapter();
 
     public void initialize() throws SQLException {

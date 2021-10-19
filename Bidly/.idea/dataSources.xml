@@ -8,17 +8,12 @@
       <jdbc-url>jdbc:sqlite:database.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="database" uuid="3fe250ae-6b6f-40cf-9f21-f615026f634a">
+    <data-source source="LOCAL" name="testing.sqlite" uuid="7a186dde-62c2-4464-8938-0cdf205df57b">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\seroo\Desktop\Bidly\database.sqlite</jdbc-url>
+      <jdbc-url>jdbc:sqlite:testing.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
-      <libraries>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.34.0/sqlite-jdbc-3.34.0.jar</url>
-        </library>
-      </libraries>
     </data-source>
   </component>
 </project>

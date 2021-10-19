@@ -34,7 +34,7 @@ public class AdminController extends Controller {
     @FXML
     private Label EarnedAmount;
 
-    DatabaseAdapter databaseAdapter = new DatabaseAdapter();
+    DatabaseAdapter databaseAdapter = new DatabaseAdapter("database.sqlite");
 
     public void initialize() throws SQLException {
 
@@ -82,6 +82,5 @@ public class AdminController extends Controller {
     protected void storeClick(ActionEvent event) throws IOException {
         this.changeView(event,"stores.fxml", 750, 500 );
     }
-
 
 }
