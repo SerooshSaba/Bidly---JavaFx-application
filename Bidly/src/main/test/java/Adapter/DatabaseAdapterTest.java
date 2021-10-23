@@ -9,12 +9,23 @@ class DatabaseAdapterTest {
 
     public DatabaseAdapter databaseAdapter = new DatabaseAdapter("testing.sqlite");
 
+    @AfterEach
+    void clearTables() throws SQLException {
+        databaseAdapter.runQuery("DELETE FROM Antiqes;DELETE FROM bids;DELETE FROM stores;");
+    }
+
     @Test
     void test_insertAntiqe_and_getAllProducts() throws SQLException {
-        databaseAdapter.insertAntiqe(new String[]{ "Object", "text", "url", "1000", "1" });
-        Antiqe antiqe = databaseAdapter.getStoreProducts(1).get(0);
-        databaseAdapter.deleteAntiqe("1");
-        Assertions.assertTrue(antiqe.getName().equals("Object") && antiqe.getDescription().equals("text") && antiqe.getPic_url().equals("url") && antiqe.getPrice() == 1000 && antiqe.getStore_id() == 1 );
+        databaseAdapter.insertAntiqe(new Antiqe("Object", "text", "url", 1000, 1 ));
+        Antiqe returned_antiqe = databaseAdapter.getStoreProducts(1).get(0);
+        Assertions.assertEquals("Object",   returned_antiqe.getName());
+        Assertions.assertEquals("text",     returned_antiqe.getDescription());
+        Assertions.assertEquals("url",      returned_antiqe.getPic_url());
+        Assertions.assertEquals(1000,       returned_antiqe.getPrice());
+        Assertions.assertEquals(1,          returned_antiqe.getStore_id() );
     }
+
+
+
 
 }

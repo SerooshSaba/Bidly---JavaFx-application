@@ -1,12 +1,12 @@
 package Adapter;
 import com.bidly.Core.Model.Antiqe;
-import com.bidly.Core.Model.Store;
+import com.bidly.Core.Model.Auctioneer;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 // Adapter class
-// Any database interface <-> This database adapter <-> Application ports
+// Application ports <-> This database adapter <-> Any database interface
 public class DatabaseAdapter {
 
     String database_name;
@@ -42,12 +42,7 @@ public class DatabaseAdapter {
         ResultSet result = this.statement.executeQuery();
         ArrayList<Antiqe> products = new ArrayList();
         while( result.next() ) {
-            int    id   = result.getInt("antiqe_id");
-            String name = result.getString("name");
-            String picurl = result.getString("pic_url");
-            String description = result.getString("description");
-            int price = result.getInt("price");
-            products.add( new Antiqe(id,name,description,picurl,price,store_id) );
+            products.add( new Antiqe(result.getInt("antiqe_id"),result.getString("name"),result.getString("description"),result.getString("pic_url"),result.getInt("price"),store_id) );
         }
         this.connection.close();
         return products;
@@ -62,10 +57,18 @@ public class DatabaseAdapter {
         return name;
     }
 
-    public int getAmountOfBids( int antiqe_id ) throws SQLException {
+    public int getAmountOfBidsForAntiqe(int antiqe_id ) throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT COUNT(*) AS bids FROM bids WHERE antiqe_id = ? ");
         this.statement.setInt(1,antiqe_id);
+        int result = this.statement.executeQuery().getInt("bids");
+        this.connection.close();
+        return result;
+    }
+
+    public int getAllBidsAmount() throws SQLException {
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
+        this.statement = this.connection.prepareStatement("SELECT COUNT(*) AS bids FROM bids");
         int result = this.statement.executeQuery().getInt("bids");
         this.connection.close();
         return result;
@@ -96,16 +99,16 @@ public class DatabaseAdapter {
         return result;
     }
 
-    public ArrayList<Store> getStores() throws SQLException {
+    public ArrayList<Auctioneer> getStores() throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT * FROM stores");
         ResultSet result = this.statement.executeQuery();
-        ArrayList<Store> stores = new ArrayList();
+        ArrayList<Auctioneer> auctioneers = new ArrayList();
         while ( result.next() ) {
-            stores.add( new Store( result.getInt("store_id"), result.getString("name") ) );
+            auctioneers.add( new Auctioneer( result.getInt("store_id"), result.getString("name") ) );
         }
         this.connection.close();
-        return stores;
+        return auctioneers;
     }
 
     public void deleteAntiqe( String antiqe_id ) throws SQLException {
@@ -124,15 +127,14 @@ public class DatabaseAdapter {
         this.connection.close();
     }
 
-    public int insertAntiqe( String[] input ) throws SQLException {
+    public int insertAntiqe( Antiqe antiqe ) throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("INSERT INTO antiqes VALUES ( NULL, ?, ?, ?, ?, ? )");
-        this.statement.setString(1, input[0] );
-        this.statement.setString(2, input[1] );
-        this.statement.setString(3, input[2] );
-        int price = Integer.parseInt(input[3].replaceAll("\\s+", ""));
-        this.statement.setInt(4, price );
-        this.statement.setInt(5, 1 );
+        this.statement.setString(1, antiqe.getName() );
+        this.statement.setString(2, antiqe.getDescription() );
+        this.statement.setString(3, antiqe.getPic_url() );
+        this.statement.setInt(4,    antiqe.getPrice() );
+        this.statement.setInt(5,    antiqe.getStore_id() );
         int result = this.statement.executeUpdate();
         this.connection.close();
         return result;

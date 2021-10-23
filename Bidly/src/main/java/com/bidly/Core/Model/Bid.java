@@ -4,8 +4,18 @@ public class Bid {
 
     int amount;
 
+    public Bid( int amount ) {
+        this.amount = amount;
+    }
+
     boolean isHigher( Bid other ) {
-        if ( this.amount > other.getAmount() )
+        if ( this.getAmount() > other.getAmount() )
+            return true;
+        return false;
+    }
+
+    boolean isLower( Bid other ) {
+        if ( this.getAmount() < other.getAmount() )
             return true;
         return false;
     }

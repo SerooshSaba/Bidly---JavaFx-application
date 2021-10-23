@@ -1,4 +1,4 @@
-drop table stores;
+drop table auctioneers;
 drop table antiqes;
 drop table bids;
 
@@ -6,7 +6,7 @@ PRAGMA foreign_keys = ON;
 
 --- TABLES
 
-CREATE TABLE stores (
+CREATE TABLE auctioneers (
                         store_id    INTEGER NOT NULL PRIMARY KEY,
                         name        TEXT NOT NULL
 );
@@ -19,7 +19,7 @@ CREATE TABLE antiqes(
                         price       INTEGER NOT NULL, -- Change to start_bid
                         store_id    INTEGER NOT NULL,
 
-                        FOREIGN KEY (store_id) REFERENCES stores(store_id) ON UPDATE CASCADE ON DELETE CASCADE
+                        FOREIGN KEY (store_id) REFERENCES auctioneers(store_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE bids (
@@ -31,9 +31,9 @@ CREATE TABLE bids (
 
 -- INSERTS
 
-INSERT INTO stores VALUES
-( NULL, 'John''s store' ),
-( NULL, 'Tommy''s store' );
+INSERT INTO auctioneers VALUES
+( NULL, 'John''s auctioneer' ),
+( NULL, 'Tommy''s auctioneer' );
 
 INSERT INTO antiqes VALUES
 ( NULL, 'Shoe', 'Rare shoe from japan', 'https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,b_rgb:f5f5f5/464e8d65-3a82-472a-aa2c-de53b2dfe7f2/wearallday-shoe-HJSFrd.png', 1000, 1 ),
@@ -56,8 +56,8 @@ antiqes.description,
 antiqes.pic_url,
 antiqes.price,
 MAX(bids.amount) AS last_bid,
-stores.name AS storename
+auctioneers.name AS storename
 FROM antiqes
 LEFT OUTER JOIN bids ON bids.antiqe_id = antiqes.antiqe_id
-INNER JOIN stores ON antiqes.store_id = stores.store_id
+INNER JOIN auctioneers ON antiqes.store_id = auctioneers.store_id
 GROUP BY antiqes.antiqe_id;

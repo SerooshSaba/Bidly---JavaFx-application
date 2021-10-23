@@ -1,0 +1,28 @@
+## Aktivitetsdiagrammer for ulike operasjoner i MVPen:
+- Slett butikk
+- Sett inn antiqe
+- Slett antiqe
+- Bid
+
+
+
+@startuml
+class Administrator {
+  void removeAuctioneer()
+  void removeAntiqe()
+  void askForPayment()
+}
+class Antiqe {
+  int: antiqe_id
+  string: name
+  string: description
+  string: pic_url
+  int: start_bid_price
+  int: store_id
+  + get/set()
+}
+class Auctioneer {
+  int: auctioneer_id
+  string: name
+}
+@enduml

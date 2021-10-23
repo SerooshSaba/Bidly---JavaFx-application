@@ -38,7 +38,7 @@
                     <PasswordField fx:id="securityCode" >321</PasswordField>
                 </VBox>
             </HBox>
-            <Button fx:id="PayButton" onAction="#payButtonClick" style="-fx-background-color:green;-fx-text-fill:white" >Pay</Button>
+            <Button onAction="#payButtonClick" style="-fx-background-color:green;-fx-text-fill:white" >Pay</Button>
         </VBox>
 
         <!-- PAYMENT FAILURE / SUCCESS POPUPS -->

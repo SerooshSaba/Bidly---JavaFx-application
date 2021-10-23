@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class AuctioneerController extends Controller {
 
-    // - - - Store title label
+    // - - - Auctioneer title label
     @FXML
     private Label storeName;
 
@@ -48,13 +48,13 @@ public class AuctioneerController extends Controller {
     DatabaseAdapter databaseAdapter = new DatabaseAdapter("database.sqlite");
     ValidatorAdapter validator = new ValidatorAdapter();
 
-    public void initialize() throws SQLException {
+    public void initialize() throws Exception {
         // Load name and products of store with store_id = 1
         storeName.setText(databaseAdapter.getStoreName(1));
         this.loadProducts(1);
     }
 
-    private void loadProducts( int store_id ) throws SQLException {
+    private void loadProducts( int store_id ) throws Exception {
         this.ProductContainer.getChildren().clear();
         ArrayList<Antiqe> antiqes = databaseAdapter.getStoreProducts(store_id);
         for ( Antiqe antiqe : antiqes ) {
@@ -64,7 +64,7 @@ public class AuctioneerController extends Controller {
 
     // Add item method
     @FXML
-    protected void addItemClick(ActionEvent event) throws SQLException {
+    protected void addItemClick(ActionEvent event) throws Exception {
         String[] input = new String[]{ this.ItemName.getText(), this.ItemDescription.getText(), this.ItemPicUrl.getText(), this.ItemPrice.getText() };
         // Validate inputs
         if ( validator.stringsEmpty(input) ) {
@@ -81,7 +81,9 @@ public class AuctioneerController extends Controller {
         }
         else { // If everything is validated, process the form
 
-            if ( databaseAdapter.insertAntiqe( input ) == 1 ) {
+            Antiqe antiqe = new Antiqe( input[0], input[1], input[2], Integer.parseInt(input[3]), 1 );
+
+            if ( databaseAdapter.insertAntiqe( antiqe ) == 1 ) {
                 MessageLabel.setStyle("-fx-text-fill:green");
                 MessageLabel.setText("Product inserted to store!");
                 loadProducts(1);
@@ -102,7 +104,7 @@ public class AuctioneerController extends Controller {
 
     @FXML
     // Add item method
-    public void deleteClick(ActionEvent actionEvent) throws SQLException {
+    public void deleteClick(ActionEvent actionEvent) throws Exception {
         Button button = (Button)(actionEvent.getSource());
         this.databaseAdapter.deleteAntiqe(button.getId());
         this.loadProducts(1);
@@ -141,8 +143,8 @@ public class AuctioneerController extends Controller {
         delete_button.setOnAction(e -> {
             try {
                 this.deleteClick(e);
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         });
         right_container.getChildren().addAll(name_label,price_label,delete_button);

@@ -15,7 +15,7 @@
         </HBox>
 
         <VBox fx:id="AddForm" maxWidth="175" style="-fx-border-color:rgb(150,150,150)" >
-            <Label>Add product to store</Label>
+            <Label>Add product to auctioneer</Label>
             <TextField fx:id="ItemName" promptText="Name" />
             <TextField fx:id="ItemDescription" promptText="Description" />
             <TextField fx:id="ItemPicUrl" promptText="Picture link" />
@@ -25,7 +25,7 @@
             <Button onAction="#addItemClick" text="Add item" />
         </VBox>
 
-        <Label>Your store items:</Label>
+        <Label>Your auctioneer items:</Label>
 
         <ScrollPane minHeight="150" maxWidth="300" style="-fx-border-style:none;-fx-border-color:black;-fx-border-width:0;-fx-focus-color:transparent" >
             <VBox fx:id="ProductContainer" maxWidth="290" />

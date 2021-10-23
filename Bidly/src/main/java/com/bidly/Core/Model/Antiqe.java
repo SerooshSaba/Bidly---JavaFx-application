@@ -6,10 +6,18 @@ public class Antiqe {
     private String name;
     private String description;
     private String pic_url;
-    private int price;
+    private int price; // TODO gjør om til start_bid_price
     private int last_bid_price;
     private int store_id;
     private String storeName;
+
+    public Antiqe( String name, String description, String pic_url, int price, int store_id ) {
+        this.name = name;
+        this.description = description;
+        this.pic_url = pic_url;
+        this.price = price;
+        this.store_id = store_id;
+    }
 
     public Antiqe( int antiqe_id, String name, String description, String pic_url, int price, int store_id ) {
         this.antiqe_id = antiqe_id;

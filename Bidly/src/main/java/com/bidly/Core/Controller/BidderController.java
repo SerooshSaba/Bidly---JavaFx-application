@@ -53,14 +53,11 @@ public class BidderController extends Controller {
     private TextField securityCode;
 
     @FXML
-    private Button PayButton;
-
-    @FXML
     private VBox paymentSuccessMessageContainer;
     @FXML
     private VBox paymentFailureMessageContainer;
 
-    public void initialize() throws SQLException {
+    public void initialize() throws Exception {
         // Load navigation logo
         Image logoImage = new Image(String.valueOf(Application.class.getResource("/images/logo.PNG")));
         logo.setPreserveRatio(true);
@@ -135,9 +132,9 @@ public class BidderController extends Controller {
     }
 
     @FXML
-    private void bidClick( int antiqe_id, int current_bid_price, int bid_amount, Label bid_message, Label current_bid_output ) throws SQLException {
+    private void bidClick( int antiqe_id, int current_bid_price, int bid_amount, Label bid_message, Label current_bid_output ) throws Exception {
 
-        int bids = databaseAdapter.getAmountOfBids( antiqe_id );
+        int bids = databaseAdapter.getAmountOfBidsForAntiqe( antiqe_id );
 
         // If there are no bids
         if ( bids == 0 ) {
@@ -196,7 +193,7 @@ public class BidderController extends Controller {
     }
 
     @FXML
-    private void payButtonClick() throws SQLException {
+    private void payButtonClick() throws Exception {
 
         // Check if the payment information is correct
         if ( paymentService.processPayment( cardNumber.getText(), expirationDate.getText(), securityCode.getText() )) {
@@ -310,7 +307,7 @@ public class BidderController extends Controller {
                     this.bidClick( antiqe.getAntiqe_id(), antiqe.getPrice(), bid_amount_converted, message_output, bid_amount );
                 }
 
-            } catch (NumberFormatException | SQLException exception ) {
+            } catch (Exception exception ) {
                 message_output.setVisible(true);
                 message_output.setText("Input a number");
                 message_output.setStyle("-fx-font-size:8.5;-fx-text-fill:red");
