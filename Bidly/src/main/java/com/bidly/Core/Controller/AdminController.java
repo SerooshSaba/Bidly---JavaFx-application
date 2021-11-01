@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class AdminController extends Controller {
 
-    // Images
+    // Image
     @FXML
     private ImageView StoreIcon;
     @FXML
