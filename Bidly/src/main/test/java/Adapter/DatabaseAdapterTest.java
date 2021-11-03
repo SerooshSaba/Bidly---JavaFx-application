@@ -1,9 +1,8 @@
 package Adapter;
 
-import com.bidly.Core.Model.Antiqe;
+import BidlyCore.Antiqe;
 import org.junit.jupiter.api.*;
 import java.sql.SQLException;
-import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseAdapterTest {
 

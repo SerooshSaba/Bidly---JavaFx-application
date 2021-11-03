@@ -1,12 +1,11 @@
-module com.bidly.bidly {
+module com.BidlyCore {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
     requires java.sql;
 
-
-    opens com.bidly.Core to javafx.fxml;
-    exports com.bidly.Core;
-    exports com.bidly.Core.Controller;
-    opens com.bidly.Core.Controller to javafx.fxml;
+    opens BidlyCore to javafx.fxml;
+    exports BidlyCore;
+    exports Controller;
+    opens Controller to javafx.fxml;
 }

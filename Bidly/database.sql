@@ -46,18 +46,3 @@ INSERT INTO antiqes VALUES
 ( NULL, 'Brush', 'Brush from 1750''s england', 'https://gambleandgunn.com/wp-content/uploads/2019/05/DSC_5424-560x560.png', 5000, 2 ),
 ( NULL, 'Lamp', 'Old school lamp', 'https://cdn5.mystore4.no/thumb/333_500/hbygg/97102_Light___Living_Kalym_lampefot_antique_bronze_1.jpg', 1000, 2 ),
 ( NULL, 'Clock', 'Old clock from germany', 'https://litb-cgis.rightinthebox.com/images/640x640/201407/lkaaed1405388815503.jpg?fmt=webp&v=1', 6522, 2 );
-
--- IMPORTANT
-
-SELECT
-antiqes.antiqe_id,
-antiqes.name,
-antiqes.description,
-antiqes.pic_url,
-antiqes.price,
-MAX(bids.amount) AS last_bid,
-auctioneers.name AS storename
-FROM antiqes
-LEFT OUTER JOIN bids ON bids.antiqe_id = antiqes.antiqe_id
-INNER JOIN auctioneers ON antiqes.store_id = auctioneers.store_id
-GROUP BY antiqes.antiqe_id;

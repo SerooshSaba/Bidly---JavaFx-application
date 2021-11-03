@@ -1,13 +1,16 @@
 package Adapter;
-import com.bidly.Core.Model.Antiqe;
-import com.bidly.Core.Model.Auctioneer;
+import Repositories.IAdminRepository;
+import Repositories.IAntiqueRepository;
+import Repositories.IStoreRepository;
+import BidlyCore.Antiqe;
+import BidlyCore.Auctioneer;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 // Adapter class
 // Application ports <-> This database adapter <-> Any database interface
-public class DatabaseAdapter {
+public class DatabaseAdapter implements IAdminRepository, IAntiqueRepository, IStoreRepository {
 
     String database_name;
     Connection connection;
