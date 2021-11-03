@@ -117,6 +117,7 @@ public class BidderController extends Controller {
 
         //// Get all products on platform
         ArrayList<Antiqe> products = this.databaseAdapter.getAllProducts();
+
         HBox row = createListRow();
         for ( int i = 0; i < products.size(); i++ ) {
             if ( i % 3 == 0 && i != 0 ) {
