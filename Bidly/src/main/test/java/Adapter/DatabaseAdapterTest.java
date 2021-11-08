@@ -38,5 +38,11 @@ class DatabaseAdapterTest {
         Assertions.assertEquals(1, bids);
     }
 
+    @Test
+    void test_getAllBidsAmount() throws SQLException {
+        int bids = databaseAdapter.getAllBidsAmount();
+        Assertions.assertEquals(1, bids);
+    }
+
 
 }
