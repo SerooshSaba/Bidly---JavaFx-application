@@ -1,6 +1,7 @@
 package Adapter;
 
 import BidlyCore.Antiqe;
+import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -43,6 +44,15 @@ class DatabaseAdapterTest {
         int bids = databaseAdapter.getAllBidsAmount();
         Assertions.assertEquals(1, bids);
     }
+
+    @Test
+    void test_getHighestBidOfAntiqe() throws SQLException {
+        int highestBid = databaseAdapter.getHighestBidOfAntiqe(1);
+        Assertions.assertTrue(1000<highestBid);
+    }
+
+
+
 
 
 }
