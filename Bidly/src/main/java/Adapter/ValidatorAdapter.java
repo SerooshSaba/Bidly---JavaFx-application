@@ -3,6 +3,13 @@ import javafx.scene.image.Image;
 
 public class ValidatorAdapter {
 
+    // If string is empty, return true
+    public boolean stringEmpty( String str ) {
+        if ( str.length() == 0 )
+            return true;
+        return false;
+    }
+
     // If one string in array is empty, return true
     public boolean stringsEmpty( String[] strings ) {
         boolean isEmpty = false;

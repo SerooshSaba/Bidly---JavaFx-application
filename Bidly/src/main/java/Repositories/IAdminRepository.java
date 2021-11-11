@@ -7,6 +7,7 @@ public interface IAdminRepository {
 
     public ArrayList<Antiqe> getAllProducts() throws SQLException;
     public int getAllBidsAmount() throws SQLException;
+    public int getAmountOfStores() throws SQLException;
     public int getAmountOfProducts() throws SQLException;
 
 }

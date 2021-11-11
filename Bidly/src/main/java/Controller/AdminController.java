@@ -3,7 +3,7 @@ package Controller;
 import Adapter.DatabaseAdapter;
 
 import BidlyCore.Application;
-import BidlyCore.Auctioneer;
+import BidlyCore.Store;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -63,7 +63,7 @@ public class AdminController extends Controller {
         // Load platform data
         int stores = databaseAdapter.getAmountOfStores();
         if ( stores == 1 ) {
-            StoreAmount.setText( String.valueOf(stores) + " Auctioneer" );
+            StoreAmount.setText( String.valueOf(stores) + " Store" );
         } else {
             StoreAmount.setText( String.valueOf(stores) + " Stores" );
         }
@@ -121,9 +121,9 @@ public class AdminController extends Controller {
 
     private void loadStores() throws Exception {
         storeListingContainer.getChildren().clear();
-        ArrayList<Auctioneer> auctioneers = databaseAdapter.getStores();
-        for ( Auctioneer auctioneer : auctioneers) {
-            storeListingContainer.getChildren().add( this.storeListingContainer( auctioneer.getAuctioneer_id(), auctioneer.getName() ) );
+        ArrayList<Store> auctioneers = databaseAdapter.getStores();
+        for ( Store store : auctioneers) {
+            storeListingContainer.getChildren().add( this.storeListingContainer( store.getStore_id(), store.getName() ) );
         }
     }
 

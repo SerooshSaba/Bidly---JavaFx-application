@@ -5,11 +5,23 @@
 <VBox alignment="TOP_CENTER" spacing="25.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AuctioneerController">
 
     <HBox alignment="CENTER_LEFT" >
-        <Button text="Logout" onAction="#logoutClick" />
+        <Button fx:id="logoutButton" text="BACK" onAction="#logoutClick" />
     </HBox>
 
-    <VBox alignment="CENTER" spacing="25.0" >
+    <!-- Signin or signup -->
+    <VBox fx:id="LoginRegisterView" alignment="CENTER" spacing="25" >
+        <Label>Login as</Label>
+        <VBox alignment="CENTER" fx:id="storeList" />
+        <Label>or register a new store</Label>
+        <VBox alignment="CENTER" maxWidth="200" >
+            <TextField fx:id="registerStoreName" promptText="Store name" />
+            <Label fx:id="registerErrorMessage" style="-fx-text-fill:red"></Label>
+            <Button onAction="#registerStore" text="Register" />
+        </VBox>
+    </VBox>
 
+    <!-- Store view -->
+    <VBox fx:id="AuctioneerView" alignment="CENTER" spacing="25.0" visible="false" managed="false" >
         <HBox alignment="CENTER">
             <Label fx:id="storeName" style="-fx-font-size:20;-fx-font-weight:bold;-fx-text-fill: rgb(100,100,100);" />
         </HBox>
@@ -20,7 +32,6 @@
             <TextField fx:id="ItemDescription" promptText="Description" />
             <TextField fx:id="ItemPicUrl" promptText="Picture link" />
             <TextField fx:id="ItemPrice" promptText="Start price" />
-
             <Label fx:id="MessageLabel" />
             <Button onAction="#addItemClick" text="Add item" />
         </VBox>
@@ -31,6 +42,8 @@
             <VBox fx:id="ProductContainer" maxWidth="290" />
         </ScrollPane>
 
+        <Button fx:id="deleteStore" text="Delete your store" onAction="#deleteStore" style="-fx-text-fill:red;-fx-border-color:red" />
+        <Label fx:id="deleteStoreLabel" style="-fx-text-fill:red" managed="false" visible="false" >Store deleted!</Label>
     </VBox>
 
 </VBox>

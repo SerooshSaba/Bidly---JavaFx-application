@@ -4,6 +4,7 @@ import Adapter.DatabaseAdapter;
 
 import Adapter.ValidatorAdapter;
 import BidlyCore.Antiqe;
+import BidlyCore.Store;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -16,21 +17,44 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AuctioneerController extends Controller {
 
-    // - - - Auctioneer title label
+    // GLOBAL VARIABLE
+    private int STORE_ID = 0;
+
+    @FXML
+    private Button logoutButton;
+
+    @FXML
+    private VBox LoginRegisterView;
+
+    @FXML
+    private Label registerErrorMessage;
+
+    @FXML
+    private VBox storeList;
+
+    @FXML
+    private TextField registerStoreName;
+
+    @FXML
+    private VBox AuctioneerView;
+
     @FXML
     private Label storeName;
 
-    // - - - Form container
+    // Form container
     @FXML
     private VBox AddForm;
     @FXML
     private Label MessageLabel;
 
-    // Input fields
+    // Add item form fields
     @FXML
     private TextField ItemName;
     @FXML
@@ -40,22 +64,62 @@ public class AuctioneerController extends Controller {
     @FXML
     private TextField ItemPrice;
 
-    // - - - Product view continer
+    // Product view container
     @FXML
     private VBox ProductContainer;
+
+    // Delete store button
+    @FXML
+    private Label deleteStoreLabel;
 
     DatabaseAdapter databaseAdapter = new DatabaseAdapter("database.sqlite");
     ValidatorAdapter validator = new ValidatorAdapter();
 
     public void initialize() throws Exception {
-        // Load name and products of store with store_id = 1
-        storeName.setText(databaseAdapter.getStoreName(1));
-        this.loadProducts(1);
+        ArrayList<Store> stores = databaseAdapter.getStores();
+        for ( Store store : stores ) {
+            Button button = new Button();
+            button.setText( store.getName() );
+            button.setOnAction(e -> {
+                this.STORE_ID = store.getStore_id();
+                try {
+                    login();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
+            storeList.getChildren().add( button );
+        }
     }
 
-    private void loadProducts( int store_id ) throws Exception {
+    @FXML
+    private void login() throws Exception {
+        storeName.setText(databaseAdapter.getStoreName(this.STORE_ID));
+        this.loadProducts();
+        this.LoginRegisterView.setManaged(false);
+        this.LoginRegisterView.setVisible(false);
+        this.AuctioneerView.setManaged(true);
+        this.AuctioneerView.setVisible(true);
+        logoutButton.setText("LOGOUT");
+    }
+
+    @FXML
+    private void registerStore() throws Exception {
+        String storename = registerStoreName.getText();
+        if ( validator.stringEmpty(storename) ) {
+            registerErrorMessage.setText("Field cannot be empty");
+        } else {
+            Store store = new Store( 0, storename );
+            databaseAdapter.insertStore(store);
+            ArrayList<Store> stores = databaseAdapter.getStores();
+            STORE_ID = stores.get(stores.size()-1).getStore_id();
+            this.login();
+        }
+    }
+
+    private void loadProducts() throws Exception {
         this.ProductContainer.getChildren().clear();
-        ArrayList<Antiqe> antiqes = databaseAdapter.getStoreProducts(store_id);
+        ArrayList<Antiqe> antiqes = databaseAdapter.getStoreProducts(STORE_ID);
         for ( Antiqe antiqe : antiqes ) {
             ProductContainer.getChildren().add( this.createProductListItem( antiqe ) );
         }
@@ -80,12 +144,12 @@ public class AuctioneerController extends Controller {
         }
         else { // If everything is validated, process the form
 
-            Antiqe antiqe = new Antiqe( input[0], input[1], input[2], Integer.parseInt(input[3]), 1 );
+            Antiqe antiqe = new Antiqe( input[0], input[1], input[2], Integer.parseInt(input[3]), STORE_ID );
 
             if ( databaseAdapter.insertAntiqe( antiqe ) == 1 ) {
                 MessageLabel.setStyle("-fx-text-fill:green");
                 MessageLabel.setText("Product inserted to store!");
-                loadProducts(1);
+                loadProducts();
             }
 
             // Empty form
@@ -106,7 +170,14 @@ public class AuctioneerController extends Controller {
     public void deleteClick(ActionEvent actionEvent) throws Exception {
         Button button = (Button)(actionEvent.getSource());
         this.databaseAdapter.deleteAntiqe(button.getId());
-        this.loadProducts(1);
+        this.loadProducts();
+    }
+
+    @FXML
+    public void deleteStore(ActionEvent actionEvent) throws SQLException {
+        databaseAdapter.deleteStore(STORE_ID);
+        deleteStoreLabel.setVisible(true);
+        deleteStoreLabel.setManaged(true);
     }
 
     // Product list item creator

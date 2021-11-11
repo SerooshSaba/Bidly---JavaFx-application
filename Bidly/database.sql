@@ -1,41 +1,39 @@
-drop table auctioneers;
-drop table antiqes;
+drop table stores;
+drop table antiques;
 drop table bids;
 
 PRAGMA foreign_keys = ON;
 
 --- TABLES
-
-CREATE TABLE auctioneers (
-                        store_id    INTEGER NOT NULL PRIMARY KEY,
-                        name        TEXT NOT NULL
+CREATE TABLE stores (
+    store_id    INTEGER NOT NULL PRIMARY KEY,
+    name        TEXT NOT NULL
 );
 
-CREATE TABLE antiqes(
-                        antiqe_id   INTEGER NOT NULL PRIMARY KEY,
-                        name        TEXT NOT NULL,
-                        description TEXT NOT NULL,
-                        pic_url     TEXT NOT NULL,
-                        price       INTEGER NOT NULL, -- Change to start_bid
-                        store_id    INTEGER NOT NULL,
+CREATE TABLE antiques(
+    antique_id  INTEGER NOT NULL PRIMARY KEY,
+    name        TEXT NOT NULL,
+    description TEXT NOT NULL,
+    pic_url     TEXT NOT NULL,
+    price       INTEGER NOT NULL,
+    store_id    INTEGER NOT NULL,
 
-                        FOREIGN KEY (store_id) REFERENCES auctioneers(store_id) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (store_id) REFERENCES stores(store_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE bids (
-                      bid_id      INTEGER NOT NULL PRIMARY KEY,
-                      amount      INTEGER NOT NULL,
-                      antiqe_id   INTEGER NOT NULL,
-                      FOREIGN KEY (antiqe_id) REFERENCES antiqes(antiqe_id) ON UPDATE CASCADE ON DELETE CASCADE
+    bid_id      INTEGER NOT NULL PRIMARY KEY,
+    amount      INTEGER NOT NULL,
+    antique_id  INTEGER NOT NULL,
+    FOREIGN KEY (antique_id) REFERENCES antiques(antique_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- INSERTS
+INSERT INTO stores VALUES
+( NULL, 'John''s store' ),
+( NULL, 'Tommy''s store' );
 
-INSERT INTO auctioneers VALUES
-( NULL, 'John''s auctioneer' ),
-( NULL, 'Tommy''s auctioneer' );
-
-INSERT INTO antiqes VALUES
+INSERT INTO antiques VALUES
 ( NULL, 'Shoe', 'Rare shoe from japan', 'https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,b_rgb:f5f5f5/464e8d65-3a82-472a-aa2c-de53b2dfe7f2/wearallday-shoe-HJSFrd.png', 1000, 1 ),
 ( NULL, 'Table', 'Victorian era table', 'https://vipp.com/sites/default/files/vipp_packs_large_table_darkoak_03_lowres.jpg', 5250, 1 ),
 ( NULL, 'Dragon statue', 'Statue from ancient japan', 'https://img.fruugo.com/product/6/99/168070996_max.jpg', 12500, 1 ),
