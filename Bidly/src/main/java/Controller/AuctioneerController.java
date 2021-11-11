@@ -3,7 +3,7 @@ package Controller;
 import Adapter.DatabaseAdapter;
 
 import Adapter.ValidatorAdapter;
-import BidlyCore.Antiqe;
+import BidlyCore.Antique;
 import BidlyCore.Store;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,8 +19,6 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class AuctioneerController extends Controller {
 
@@ -119,9 +117,9 @@ public class AuctioneerController extends Controller {
 
     private void loadProducts() throws Exception {
         this.ProductContainer.getChildren().clear();
-        ArrayList<Antiqe> antiqes = databaseAdapter.getStoreProducts(STORE_ID);
-        for ( Antiqe antiqe : antiqes ) {
-            ProductContainer.getChildren().add( this.createProductListItem( antiqe ) );
+        ArrayList<Antique> antiques = databaseAdapter.getStoreProducts(STORE_ID);
+        for ( Antique antique : antiques) {
+            ProductContainer.getChildren().add( this.createProductListItem(antique) );
         }
     }
 
@@ -144,9 +142,9 @@ public class AuctioneerController extends Controller {
         }
         else { // If everything is validated, process the form
 
-            Antiqe antiqe = new Antiqe( input[0], input[1], input[2], Integer.parseInt(input[3]), STORE_ID );
+            Antique antique = new Antique( input[0], input[1], input[2], Integer.parseInt(input[3]), STORE_ID );
 
-            if ( databaseAdapter.insertAntiqe( antiqe ) == 1 ) {
+            if ( databaseAdapter.insertAntiqe(antique) == 1 ) {
                 MessageLabel.setStyle("-fx-text-fill:green");
                 MessageLabel.setText("Product inserted to store!");
                 loadProducts();
@@ -181,7 +179,7 @@ public class AuctioneerController extends Controller {
     }
 
     // Product list item creator
-    public HBox createProductListItem( Antiqe antiqe ) {
+    public HBox createProductListItem( Antique antique) {
 
         HBox container = new HBox();
         container.setPrefWidth(280);
@@ -189,7 +187,7 @@ public class AuctioneerController extends Controller {
 
         VBox left_image_container = new VBox();
 
-        Image img_obj = new Image( antiqe.getPic_url() ,true);
+        Image img_obj = new Image( antique.getPic_url() ,true);
         ImageView image = new ImageView(img_obj);
         image.setFitHeight(50);
         image.setFitWidth(50);
@@ -199,16 +197,16 @@ public class AuctioneerController extends Controller {
 
         // Labels
         Label name_label = new Label();
-        name_label.setText( antiqe.getName() );
+        name_label.setText( antique.getName() );
         name_label.setStyle("-fx-font-size:12.5;-fx-font-weight:bold");
 
         Label price_label = new Label();
-        price_label.setText( antiqe.getPrice() + "$");
+        price_label.setText( antique.getPrice() + "$");
         price_label.setStyle("-fx-text-fill:green;-fx-font-size:10");
         // Delete button
         Button delete_button = new Button();
         delete_button.setText("Delete");
-        delete_button.setId(String.valueOf( antiqe.getAntiqe_id() ));
+        delete_button.setId(String.valueOf( antique.getAntiqe_id() ));
         delete_button.setPadding(new Insets(1));
         delete_button.setOnAction(e -> {
             try {

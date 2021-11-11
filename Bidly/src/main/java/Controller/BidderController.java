@@ -3,8 +3,8 @@ package Controller;
 import Adapter.DatabaseAdapter;
 import Adapter.PaymentServiceAdapter;
 
+import BidlyCore.Antique;
 import BidlyCore.Application;
-import BidlyCore.Antiqe;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -115,7 +115,7 @@ public class BidderController extends Controller {
         paymentProcessorsImage.setFitWidth(175);
 
         //// Get all products on platform
-        ArrayList<Antiqe> products = this.databaseAdapter.getAllProducts();
+        ArrayList<Antique> products = this.databaseAdapter.getAllProducts();
 
         HBox row = createListRow();
         for ( int i = 0; i < products.size(); i++ ) {
@@ -235,7 +235,7 @@ public class BidderController extends Controller {
         return row;
     }
 
-    private VBox createProductView( Antiqe antiqe ) {
+    private VBox createProductView( Antique antique) {
 
         // Create main container
         VBox container = new VBox();
@@ -246,21 +246,21 @@ public class BidderController extends Controller {
         container.setAlignment(Pos.CENTER);
 
         // Label for store name
-        Label storename = new Label( antiqe.getStoreName() );
+        Label storename = new Label( antique.getStoreName() );
         storename.setStyle("-fx-font-size:10");
 
         // Label for product name
-        Label name = new Label( antiqe.getName() );
+        Label name = new Label( antique.getName() );
         name.setStyle("-fx-font-size:12.5;-fx-font-weight:bold");
 
         // ImageView for image of product
-        Image image_object = new Image( antiqe.getPic_url() ,true);
+        Image image_object = new Image( antique.getPic_url() ,true);
         ImageView image = new ImageView(image_object);
         image.setFitHeight(75);
         image.setFitWidth(75);
 
         // Label for description
-        Label description = new Label(antiqe.getDescription() );
+        Label description = new Label(antique.getDescription() );
         description.setStyle("-fx-font-size:10");
         description.setAlignment(Pos.CENTER);
         description.setMaxHeight(50);
@@ -273,12 +273,12 @@ public class BidderController extends Controller {
 
         Label bid_text = new Label();
         Label bid_amount = new Label();
-        if ( antiqe.getLast_bid_price() != 0 ) {
+        if ( antique.getLast_bid_price() != 0 ) {
             bid_text.setText( "Last bid: " );
-            bid_amount.setText(String.valueOf(antiqe.getLast_bid_price()) + "$");
+            bid_amount.setText(String.valueOf(antique.getLast_bid_price()) + "$");
         } else {
             bid_text.setText( "Starting bid price: " );
-            bid_amount.setText(String.valueOf( antiqe.getPrice() ) + "$");
+            bid_amount.setText(String.valueOf( antique.getPrice() ) + "$");
         }
 
         bid_amount.setStyle("-fx-text-fill:green");
@@ -301,10 +301,10 @@ public class BidderController extends Controller {
             try {
                 int bid_amount_converted = Integer.parseInt( bid_field.getText() );
 
-                if ( antiqe.getLast_bid_price() != 0 ) {
-                    this.bidClick( antiqe.getAntiqe_id(), antiqe.getLast_bid_price(), bid_amount_converted, message_output, bid_amount );
+                if ( antique.getLast_bid_price() != 0 ) {
+                    this.bidClick( antique.getAntiqe_id(), antique.getLast_bid_price(), bid_amount_converted, message_output, bid_amount );
                 } else {
-                    this.bidClick( antiqe.getAntiqe_id(), antiqe.getPrice(), bid_amount_converted, message_output, bid_amount );
+                    this.bidClick( antique.getAntiqe_id(), antique.getPrice(), bid_amount_converted, message_output, bid_amount );
                 }
 
             } catch (Exception exception ) {

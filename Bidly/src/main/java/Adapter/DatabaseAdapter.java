@@ -1,9 +1,9 @@
 package Adapter;
+import BidlyCore.Antique;
 import BidlyCore.Store;
 import Repositories.IAdminRepository;
 import Repositories.IAntiqueRepository;
 import Repositories.IStoreRepository;
-import BidlyCore.Antiqe;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class DatabaseAdapter implements IAdminRepository, IAntiqueRepository, IS
     }
 
     // READ
-    public ArrayList<Antiqe> getAllProducts() throws SQLException {
+    public ArrayList<Antique> getAllProducts() throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         String query_string = "SELECT antiques.antique_id, antiques.name, antiques.description, antiques.pic_url, " +
                 "antiques.price, MAX(bids.amount) AS last_bid, antiques.store_id, stores.name AS storename FROM antiques " +
@@ -29,23 +29,23 @@ public class DatabaseAdapter implements IAdminRepository, IAntiqueRepository, IS
                 "GROUP BY antiques.antique_id";
         this.statement = this.connection.prepareStatement(query_string);
         ResultSet result = this.statement.executeQuery();
-        ArrayList<Antiqe> prodcuts = new ArrayList();
+        ArrayList<Antique> prodcuts = new ArrayList();
         while ( result.next() ) {
-            Antiqe antiqe = new Antiqe( result.getInt("antique_id"), result.getString("name"), result.getString("description"), result.getString("pic_url"), result.getInt("price"), result.getInt("last_bid"), result.getInt("store_id"), result.getString("storename") );
-            prodcuts.add(antiqe);
+            Antique antique = new Antique( result.getInt("antique_id"), result.getString("name"), result.getString("description"), result.getString("pic_url"), result.getInt("price"), result.getInt("last_bid"), result.getInt("store_id"), result.getString("storename") );
+            prodcuts.add(antique);
         }
         this.connection.close();
         return prodcuts;
     }
 
-    public ArrayList<Antiqe> getStoreProducts( int store_id ) throws SQLException {
+    public ArrayList<Antique> getStoreProducts(int store_id ) throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT * FROM antiques WHERE store_id = ?");
         this.statement.setInt(1, store_id );
         ResultSet result = this.statement.executeQuery();
-        ArrayList<Antiqe> products = new ArrayList();
+        ArrayList<Antique> products = new ArrayList();
         while( result.next() ) {
-            products.add( new Antiqe(result.getInt("antique_id"),result.getString("name"),result.getString("description"),result.getString("pic_url"),result.getInt("price"),store_id) );
+            products.add( new Antique(result.getInt("antique_id"),result.getString("name"),result.getString("description"),result.getString("pic_url"),result.getInt("price"),store_id) );
         }
         this.connection.close();
         return products;
@@ -145,14 +145,14 @@ public class DatabaseAdapter implements IAdminRepository, IAntiqueRepository, IS
         this.connection.close();
     }
 
-    public int insertAntiqe( Antiqe antiqe ) throws SQLException {
+    public int insertAntiqe( Antique antique) throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("INSERT INTO antiques VALUES ( NULL, ?, ?, ?, ?, ? )");
-        this.statement.setString(1, antiqe.getName() );
-        this.statement.setString(2, antiqe.getDescription() );
-        this.statement.setString(3, antiqe.getPic_url() );
-        this.statement.setInt(4,    antiqe.getPrice() );
-        this.statement.setInt(5,    antiqe.getStore_id() );
+        this.statement.setString(1, antique.getName() );
+        this.statement.setString(2, antique.getDescription() );
+        this.statement.setString(3, antique.getPic_url() );
+        this.statement.setInt(4,    antique.getPrice() );
+        this.statement.setInt(5,    antique.getStore_id() );
         int result = this.statement.executeUpdate();
         this.connection.close();
         return result;

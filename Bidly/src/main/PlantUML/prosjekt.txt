@@ -1,7 +1,7 @@
 ## Aktivitetsdiagrammer for ulike operasjoner i MVPen:
 - Slett butikk
-- Sett inn antiqe
-- Slett antiqe
+- Sett inn antique
+- Slett antique
 - Bid
 
 

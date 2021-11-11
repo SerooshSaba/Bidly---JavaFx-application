@@ -1,6 +1,6 @@
 package Repositories;
 
-import BidlyCore.Antiqe;
+import BidlyCore.Antique;
 import BidlyCore.Store;
 
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ public interface IStoreRepository {
     public ArrayList<Store> getStores() throws SQLException;
     public int getAmountOfStores() throws SQLException;
     public String getStoreName( int store_id ) throws SQLException;
-    public ArrayList<Antiqe> getStoreProducts(int store_id ) throws SQLException;
+    public ArrayList<Antique> getStoreProducts(int store_id ) throws SQLException;
 
     // DELETE
     public void deleteStore( int store_id ) throws SQLException;

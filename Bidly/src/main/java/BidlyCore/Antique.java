@@ -1,6 +1,6 @@
 package BidlyCore;
 
-public class Antiqe {
+public class Antique {
 
     private int antiqe_id;
     private String name;
@@ -11,7 +11,7 @@ public class Antiqe {
     private int store_id;
     private String storeName;
 
-    public Antiqe( String name, String description, String pic_url, int price, int store_id ) {
+    public Antique(String name, String description, String pic_url, int price, int store_id ) {
         this.name = name;
         this.description = description;
         this.pic_url = pic_url;
@@ -19,7 +19,7 @@ public class Antiqe {
         this.store_id = store_id;
     }
 
-    public Antiqe( int antiqe_id, String name, String description, String pic_url, int price, int store_id ) {
+    public Antique(int antiqe_id, String name, String description, String pic_url, int price, int store_id ) {
         this.antiqe_id = antiqe_id;
         this.name = name;
         this.description = description;
@@ -28,7 +28,7 @@ public class Antiqe {
         this.store_id = store_id;
     }
 
-    public Antiqe( int antiqe_id, String name, String description, String pic_url, int price, int last_bid_price, int store_id, String storeName ) {
+    public Antique(int antiqe_id, String name, String description, String pic_url, int price, int last_bid_price, int store_id, String storeName ) {
         this.antiqe_id = antiqe_id;
         this.name = name;
         this.description = description;
