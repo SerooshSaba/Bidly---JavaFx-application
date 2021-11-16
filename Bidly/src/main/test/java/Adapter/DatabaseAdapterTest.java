@@ -11,7 +11,7 @@ class DatabaseAdapterTest {
 
     @BeforeEach
     void insertAntiqe() throws SQLException {
-        databaseAdapter.insertAntiqe(new Antiqe("Object", "text", "url", 1000, 1 ));
+        databaseAdapter.insertAntiqe(new Antique("Object", "text", "url", 1000, 1 ));
         databaseAdapter.insertBid(1001, 1);
     }
 
