@@ -72,7 +72,7 @@ public class BidderController extends Controller {
         successIcon.setFitWidth(75);
         successIcon.setImage(successImage);
         // Label
-        Label successLabel = new Label("Payment processed successfully.");
+        Label successLabel = new Label("Payment succeeded and bid placed.");
         successLabel.setStyle("-fx-text-fill:green");
         // Back button
         Button success_container_back_button = new Button("Back to bidding");
@@ -94,7 +94,7 @@ public class BidderController extends Controller {
         failureIcon.setFitWidth(75);
         failureIcon.setImage(failureImage);
         // Label
-        Label failureLabel = new Label("Payment failed to process.");
+        Label failureLabel = new Label("Payment failed and bid did not register.");
         failureLabel.setStyle("-fx-text-fill:red");
         // Back button
         Button failure_container_back_button = new Button("Back to bidding");
@@ -203,7 +203,7 @@ public class BidderController extends Controller {
             paymentSuccessMessageContainer.setVisible(true);
             paymentSuccessMessageContainer.setManaged(true);
             // Update the bid in the product overview
-            CURRENT_BID_OUTPUT.setText(String.valueOf(BID_AMOUNT)+"$");
+            CURRENT_BID_OUTPUT.setText(String.valueOf(BID_AMOUNT)+"kr");
             // Insert the bid into the databaseAdapter system
             databaseAdapter.insertBid( BID_AMOUNT, ANTIQE_ID );
             // Display bid succeeded message
@@ -275,10 +275,10 @@ public class BidderController extends Controller {
         Label bid_amount = new Label();
         if ( antique.getLast_bid_price() != 0 ) {
             bid_text.setText( "Last bid: " );
-            bid_amount.setText(String.valueOf(antique.getLast_bid_price()) + "$");
+            bid_amount.setText(String.valueOf(antique.getLast_bid_price()) + "kr");
         } else {
             bid_text.setText( "Starting bid price: " );
-            bid_amount.setText(String.valueOf( antique.getPrice() ) + "$");
+            bid_amount.setText(String.valueOf( antique.getPrice() ) + "kr");
         }
 
         bid_amount.setStyle("-fx-text-fill:green");
@@ -294,7 +294,7 @@ public class BidderController extends Controller {
         bid_input_container.setAlignment(Pos.CENTER);
         TextField bid_field = new TextField();
         Button bid_button = new Button("bid");
-        bid_field.setPromptText("$$$");
+        bid_field.setPromptText("X kr");
         bid_field.setMaxWidth(75);
 
         bid_button.setOnAction(e -> {
