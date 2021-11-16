@@ -3,17 +3,17 @@ package BidlyCore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class AntiqeTest {
+public class AntiqueTest {
 
     @Test
     void antique_table_initial_value() {
-        Antiqe antiqe = new Antiqe("Object", "text", "url", 1000, 1 );
+        Antique antiqe = new Antique("Object", "text", "url", 1000, 1 );
         Assertions.assertEquals(0, antiqe.getAntiqe_id());
     }
 
     @Test
     void antique_table_fill_value() {
-        Antiqe antiqe = new Antiqe(1, "text", "text", "url", 100, 100, 1, "name"  );
+        Antique antiqe = new Antique(1, "text", "text", "url", 100, 100, 1, "name"  );
         Assertions.assertEquals(antiqe.getAntiqe_id(), 1);
         Assertions.assertEquals(antiqe.getName(), "text");
         Assertions.assertEquals(antiqe.getDescription(), "text");
