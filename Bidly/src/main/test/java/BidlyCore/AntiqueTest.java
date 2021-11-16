@@ -7,8 +7,8 @@ public class AntiqueTest {
 
     @Test
     void antique_table_initial_value() {
-        Antique antique = new Antique("Object", "text", "url", 1000, 1 );
-        Assertions.assertEquals(0, antique.getAntiqe_id());
+        Antique antiqe = new Antique("Object", "text", "url", 1000, 1 );
+        Assertions.assertEquals(0, antiqe.getAntiqe_id());
     }
 
     @Test
