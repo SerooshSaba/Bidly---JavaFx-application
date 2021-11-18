@@ -63,9 +63,9 @@ public class AdminController extends Controller {
         // Load platform data
         int stores = databaseAdapter.getAmountOfStores();
         if ( stores == 1 ) {
-            StoreAmount.setText( String.valueOf(stores) + " Store" );
+            StoreAmount.setText( String.valueOf(stores) + " Seller" );
         } else {
-            StoreAmount.setText( String.valueOf(stores) + " Stores" );
+            StoreAmount.setText( String.valueOf(stores) + " Sellers" );
         }
 
         int products = databaseAdapter.getAmountOfProducts();
