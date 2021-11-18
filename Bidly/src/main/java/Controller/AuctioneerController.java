@@ -144,7 +144,7 @@ public class AuctioneerController extends Controller {
 
             Antique antique = new Antique( input[0], input[1], input[2], Integer.parseInt(input[3]), STORE_ID );
 
-            if ( databaseAdapter.insertAntiqe(antique) == 1 ) {
+            if ( databaseAdapter.insertAntique(antique) == 1 ) {
                 MessageLabel.setStyle("-fx-text-fill:green");
                 MessageLabel.setText("Product inserted to store!");
                 loadProducts();
@@ -167,7 +167,7 @@ public class AuctioneerController extends Controller {
     // Add item method
     public void deleteClick(ActionEvent actionEvent) throws Exception {
         Button button = (Button)(actionEvent.getSource());
-        this.databaseAdapter.deleteAntiqe(button.getId());
+        this.databaseAdapter.deleteAntique(button.getId());
         this.loadProducts();
     }
 
@@ -206,7 +206,7 @@ public class AuctioneerController extends Controller {
         // Delete button
         Button delete_button = new Button();
         delete_button.setText("Delete");
-        delete_button.setId(String.valueOf( antique.getAntiqe_id() ));
+        delete_button.setId(String.valueOf( antique.getAntique_id() ));
         delete_button.setPadding(new Insets(1));
         delete_button.setOnAction(e -> {
             try {

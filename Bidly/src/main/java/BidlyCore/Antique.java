@@ -2,7 +2,7 @@ package BidlyCore;
 
 public class Antique {
 
-    private int antiqe_id;
+    private int antique_id;
     private String name;
     private String description;
     private String pic_url;
@@ -19,8 +19,8 @@ public class Antique {
         this.store_id = store_id;
     }
 
-    public Antique(int antiqe_id, String name, String description, String pic_url, int price, int store_id ) {
-        this.antiqe_id = antiqe_id;
+    public Antique(int antique_id, String name, String description, String pic_url, int price, int store_id ) {
+        this.antique_id = antique_id;
         this.name = name;
         this.description = description;
         this.pic_url = pic_url;
@@ -28,8 +28,8 @@ public class Antique {
         this.store_id = store_id;
     }
 
-    public Antique(int antiqe_id, String name, String description, String pic_url, int price, int last_bid_price, int store_id, String storeName ) {
-        this.antiqe_id = antiqe_id;
+    public Antique(int antique_id, String name, String description, String pic_url, int price, int last_bid_price, int store_id, String storeName ) {
+        this.antique_id = antique_id;
         this.name = name;
         this.description = description;
         this.pic_url = pic_url;
@@ -40,7 +40,7 @@ public class Antique {
     }
 
     // GETTERS
-    public int getAntiqe_id() {return antiqe_id;}
+    public int getAntique_id() {return antique_id;}
     public String getName() {return name;}
     public String getDescription() {return description;}
     public String getPic_url() {return pic_url;}
@@ -50,7 +50,7 @@ public class Antique {
     public String getStoreName(){return storeName;}
 
     // SETTERS
-    public void setAntiqe_id(int antiqe_id) {this.antiqe_id = antiqe_id;}
+    public void setAntique_id(int antique_id) {this.antique_id = antique_id;}
     public void setName(String name) {this.name = name;}
     public void setDescription(String description) {this.description = description;}
     public void setPic_url(String pic_url) {this.pic_url = pic_url;}

@@ -60,10 +60,10 @@ public class DatabaseAdapter implements IAdminRepository, IAntiqueRepository, IS
         return name;
     }
 
-    public int getAmountOfBidsForAntiqe(int antiqe_id ) throws SQLException {
+    public int getAmountOfBidsForAntique(int antique_id ) throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT COUNT(*) AS bids FROM bids WHERE antique_id = ? ");
-        this.statement.setInt(1,antiqe_id);
+        this.statement.setInt(1,antique_id);
         int result = this.statement.executeQuery().getInt("bids");
         this.connection.close();
         return result;
@@ -93,10 +93,10 @@ public class DatabaseAdapter implements IAdminRepository, IAntiqueRepository, IS
         return result;
     }
 
-    public int getHighestBidOfAntiqe( int antiqe_id ) throws SQLException {
+    public int getHighestBidOfAntique(int antique_id ) throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT MAX(amount) as highest_bid FROM bids WHERE antique_id = ?");
-        this.statement.setInt(1, antiqe_id);
+        this.statement.setInt(1, antique_id);
         int result = this.statement.executeQuery().getInt("highest_bid");
         this.connection.close();
         return result;
@@ -115,10 +115,10 @@ public class DatabaseAdapter implements IAdminRepository, IAntiqueRepository, IS
     }
 
     // DELETE
-    public void deleteAntiqe( String antiqe_id ) throws SQLException {
+    public void deleteAntique( String antique_id ) throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("DELETE FROM antiques WHERE antique_id = ?");
-        this.statement.setInt(1,Integer.parseInt(antiqe_id));
+        this.statement.setInt(1,Integer.parseInt(antique_id));
         this.statement.executeUpdate();
         this.connection.close();
     }
@@ -145,7 +145,7 @@ public class DatabaseAdapter implements IAdminRepository, IAntiqueRepository, IS
         this.connection.close();
     }
 
-    public int insertAntiqe( Antique antique) throws SQLException {
+    public int insertAntique( Antique antique) throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("INSERT INTO antiques VALUES ( NULL, ?, ?, ?, ?, ? )");
         this.statement.setString(1, antique.getName() );

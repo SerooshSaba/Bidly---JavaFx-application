@@ -4,9 +4,9 @@ import java.sql.SQLException;
 
 public interface IAntiqueRepository {
 
-    public int insertAntiqe( Antique antique) throws SQLException;
-    public int getAmountOfBidsForAntiqe(int antiqe_id ) throws SQLException;
-    public int getHighestBidOfAntiqe( int antiqe_id ) throws SQLException;
-    public void deleteAntiqe( String antiqe_id ) throws SQLException;
+    int insertAntique( Antique antique) throws SQLException;
+    int getAmountOfBidsForAntique(int antique_id ) throws SQLException;
+    int getHighestBidOfAntique( int antique_id ) throws SQLException;
+    void deleteAntique( String antique_id ) throws SQLException;
 
 }
