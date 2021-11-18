@@ -206,7 +206,7 @@ public class AuctioneerController extends Controller {
         // Delete button
         Button delete_button = new Button();
         delete_button.setText("Delete");
-        delete_button.setId(String.valueOf( antique.getAntiqe_id() ));
+        delete_button.setId(String.valueOf( antique.getAntique_id() ));
         delete_button.setPadding(new Insets(1));
         delete_button.setOnAction(e -> {
             try {

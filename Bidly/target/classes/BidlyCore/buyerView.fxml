@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+
+<VBox alignment="TOP_CENTER" spacing="25" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Controller.BuyerController" prefHeight="400.0" prefWidth="600.0">
+
+    <!-- NAV -->
+    <HBox>
+        <Button fx:id="logoutClick" onAction="#logoutClick" >Logout</Button>
+        <HBox alignment="CENTER" HBox.hgrow="ALWAYS" >
+            <ImageView fx:id="logo" />
+        </HBox>
+    </HBox>
+
+    <!-- BODY -->
+    <VBox alignment="CENTER" >
+
+        <!-- PRODUCTS LISTING CONTAINER -->
+        <ScrollPane fx:id="productOverviewContainer" minHeight="400" style="-fx-background-color:Transparent" fitToWidth="true" fitToHeight="true" >
+            <VBox VBox.vgrow="ALWAYS" fx:id="productListingContainer" />
+        </ScrollPane>
+
+        <!-- PAYMENT PROCESSOR POPUP -->
+        <VBox visible="false" managed="false" alignment="CENTER_LEFT" fx:id="paymentContainer" maxWidth="175" minHeight="300" spacing="10" >
+            <ImageView fx:id="paymentProcessorsImage" />
+            <Label style="-fx-font-weight:bold" >Card number</Label>
+            <TextField fx:id="cardNumber" text="1234 1234 1234 1234" />
+            <Label style="-fx-font-weight:bold" >Name on card</Label>
+            <TextField text="John Johnson" />
+            <HBox alignment="CENTER" >
+                <VBox>
+                    <Label style="-fx-font-weight:bold" >Expiry date</Label>
+                    <TextField fx:id="expirationDate" >01/09</TextField>
+                </VBox>
+                <VBox>
+                    <Label style="-fx-font-weight:bold" >Security code</Label>
+                    <PasswordField fx:id="securityCode" >321</PasswordField>
+                </VBox>
+            </HBox>
+            <Button onAction="#payButtonClick" style="-fx-background-color:green;-fx-text-fill:white" >Pay</Button>
+        </VBox>
+
+        <!-- PAYMENT FAILURE / SUCCESS POPUPS -->
+        <VBox visible="false" managed="false" alignment="BOTTOM_CENTER" fx:id="paymentSuccessMessageContainer" minHeight="200" spacing="10" />
+        <VBox visible="false" managed="false" alignment="BOTTOM_CENTER" fx:id="paymentFailureMessageContainer" minHeight="200" spacing="10" />
+
+    </VBox>
+
+</VBox>

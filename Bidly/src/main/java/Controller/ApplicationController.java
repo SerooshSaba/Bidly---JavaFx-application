@@ -21,7 +21,7 @@ public class ApplicationController extends Controller {
         this.logoImage.setImage(image);
         this.logoImage.setPreserveRatio(true);
         this.logoImage.setFitWidth(90);
-        this.userTypes.getItems().setAll("Admin", "Auctioneer", "Bidder");
+        this.userTypes.getItems().setAll("Admin", "Seller", "Buyer");
     }
 
     @FXML
@@ -30,11 +30,11 @@ public class ApplicationController extends Controller {
         if (  UserSelection.equals("Admin")  ) {
             this.changeView( event,"adminView.fxml", 750, 500 );
         }
-        else if ( UserSelection.equals("Auctioneer") ) {
-            this.changeView( event,"auctioneerView.fxml", 800, 750 );
+        else if ( UserSelection.equals("Seller") ) {
+            this.changeView( event,"sellerView.fxml", 800, 750 );
         }
         else {
-            this.changeView( event,"bidderView.fxml", 900, 750 );
+            this.changeView( event,"buyerView.fxml", 900, 750 );
         }
     }
 

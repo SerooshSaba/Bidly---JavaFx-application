@@ -302,9 +302,9 @@ public class BidderController extends Controller {
                 int bid_amount_converted = Integer.parseInt( bid_field.getText() );
 
                 if ( antique.getLast_bid_price() != 0 ) {
-                    this.bidClick( antique.getAntiqe_id(), antique.getLast_bid_price(), bid_amount_converted, message_output, bid_amount );
+                    this.bidClick( antique.getAntique_id(), antique.getLast_bid_price(), bid_amount_converted, message_output, bid_amount );
                 } else {
-                    this.bidClick( antique.getAntiqe_id(), antique.getPrice(), bid_amount_converted, message_output, bid_amount );
+                    this.bidClick( antique.getAntique_id(), antique.getPrice(), bid_amount_converted, message_output, bid_amount );
                 }
 
             } catch (Exception exception ) {
