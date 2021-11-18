@@ -2,7 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="TOP_CENTER" spacing="25.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AuctioneerController">
+<VBox alignment="TOP_CENTER" spacing="25.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SellerController">
 
     <HBox alignment="CENTER_LEFT" >
         <Button fx:id="logoutButton" text="BACK" onAction="#logoutClick" />
@@ -21,13 +21,13 @@
     </VBox>
 
     <!-- Store view -->
-    <VBox fx:id="AuctioneerView" alignment="CENTER" spacing="25.0" visible="false" managed="false" >
+    <VBox fx:id="SellerView" alignment="CENTER" spacing="25.0" visible="false" managed="false" >
         <HBox alignment="CENTER">
             <Label fx:id="storeName" style="-fx-font-size:20;-fx-font-weight:bold;-fx-text-fill: rgb(100,100,100);" />
         </HBox>
 
         <VBox fx:id="AddForm" maxWidth="175" style="-fx-border-color:rgb(150,150,150)" >
-            <Label>Add product to auctioneer</Label>
+            <Label>Add product to seller</Label>
             <TextField fx:id="ItemName" promptText="Name" />
             <TextField fx:id="ItemDescription" promptText="Description" />
             <TextField fx:id="ItemPicUrl" promptText="Picture link" />
@@ -36,7 +36,7 @@
             <Button onAction="#addItemClick" text="Add item" />
         </VBox>
 
-        <Label>Your auctioneer items:</Label>
+        <Label>Your seller items:</Label>
 
         <ScrollPane minHeight="150" maxWidth="300" style="-fx-border-style:none;-fx-border-color:black;-fx-border-width:0;-fx-focus-color:transparent" >
             <VBox fx:id="ProductContainer" maxWidth="290" />

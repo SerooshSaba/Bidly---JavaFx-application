@@ -20,14 +20,14 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class BidderController extends Controller {
+public class BuyerController extends Controller {
 
     // Adapter
     DatabaseAdapter databaseAdapter = new DatabaseAdapter("database.sqlite");
     PaymentServiceAdapter paymentService = new PaymentServiceAdapter();
 
     // Globals
-    private int ANTIQE_ID;
+    private int ANTIQUE_ID;
     private int BID_AMOUNT;
     private Label BID_MESSAGE;
     private Label CURRENT_BID_OUTPUT;
@@ -149,7 +149,7 @@ public class BidderController extends Controller {
                 productOverviewContainer.setManaged(false);
 
                 // Send the product data to the global data variables
-                this.ANTIQE_ID = antiqe_id;
+                this.ANTIQUE_ID = antiqe_id;
                 this.BID_AMOUNT = bid_amount;
                 this.BID_MESSAGE = bid_message;
                 this.CURRENT_BID_OUTPUT = current_bid_output;
@@ -177,7 +177,7 @@ public class BidderController extends Controller {
                 productOverviewContainer.setManaged(false);
 
                 // Send the product data to the global data variables
-                this.ANTIQE_ID = antiqe_id;
+                this.ANTIQUE_ID = antiqe_id;
                 this.BID_AMOUNT = bid_amount;
                 this.BID_MESSAGE = bid_message;
                 this.CURRENT_BID_OUTPUT = current_bid_output;
@@ -205,7 +205,7 @@ public class BidderController extends Controller {
             // Update the bid in the product overview
             CURRENT_BID_OUTPUT.setText(String.valueOf(BID_AMOUNT)+"kr");
             // Insert the bid into the databaseAdapter system
-            databaseAdapter.insertBid( BID_AMOUNT, ANTIQE_ID );
+            databaseAdapter.insertBid( BID_AMOUNT, ANTIQUE_ID);
             // Display bid succeeded message
             BID_MESSAGE.setText("Bid placed!");
             BID_MESSAGE.setStyle("-fx-font-size:12.5;-fx-text-fill:green;-fx-font-weight:bold");

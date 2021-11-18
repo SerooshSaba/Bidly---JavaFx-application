@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.ImageView?>
 
-<VBox alignment="TOP_CENTER" spacing="25" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Controller.BidderController" prefHeight="400.0" prefWidth="600.0">
+<VBox alignment="TOP_CENTER" spacing="25" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Controller.BuyerController" prefHeight="400.0" prefWidth="600.0">
 
     <!-- NAV -->
     <HBox>

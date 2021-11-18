@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AuctioneerController extends Controller {
+public class SellerController extends Controller {
 
     // GLOBAL VARIABLE
     private int STORE_ID = 0;
@@ -41,7 +41,7 @@ public class AuctioneerController extends Controller {
     private TextField registerStoreName;
 
     @FXML
-    private VBox AuctioneerView;
+    private VBox SellerView;
 
     @FXML
     private Label storeName;
@@ -96,8 +96,8 @@ public class AuctioneerController extends Controller {
         this.loadProducts();
         this.LoginRegisterView.setManaged(false);
         this.LoginRegisterView.setVisible(false);
-        this.AuctioneerView.setManaged(true);
-        this.AuctioneerView.setVisible(true);
+        this.SellerView.setManaged(true);
+        this.SellerView.setVisible(true);
         logoutButton.setText("LOGOUT");
     }
 

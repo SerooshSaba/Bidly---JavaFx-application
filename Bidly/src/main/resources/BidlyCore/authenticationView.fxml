@@ -14,7 +14,7 @@
 
     <Label text="Login as:" />
 
-    <ComboBox fx:id="userTypes" layoutX="15.0" layoutY="33.0" prefWidth="125.0" value="Bidder" />
+    <ComboBox fx:id="userTypes" layoutX="15.0" layoutY="33.0" prefWidth="125.0" value="Buyer" />
 
     <HBox alignment="CENTER" >
         <Button text="Login" onAction="#LoginClick"/>
