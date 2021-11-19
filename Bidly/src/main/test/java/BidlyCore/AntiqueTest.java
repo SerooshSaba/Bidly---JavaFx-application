@@ -13,15 +13,15 @@ public class AntiqueTest {
 
     @Test
     void antique_table_fill_value() {
-        Antique antique = new Antique(1, "text", "text", "url", 100, 100, 1, "name"  );
-        Assertions.assertEquals(antique.getAntique_id(), 1);
-        Assertions.assertEquals(antique.getName(), "text");
-        Assertions.assertEquals(antique.getDescription(), "text");
-        Assertions.assertEquals(antique.getPic_url(), "url");
-        Assertions.assertEquals(antique.getPrice(), 100);
-        Assertions.assertEquals(antique.getLast_bid_price(), 100);
-        Assertions.assertEquals(antique.getStore_id(), 1);
-        Assertions.assertEquals(antique.getStoreName(), "name");
+        Antique antique = new Antique(1, "name", "text", "url", 100, 110, 1, "store name"  );
+        Assertions.assertEquals(1, antique.getAntique_id());
+        Assertions.assertEquals("name", antique.getName());
+        Assertions.assertEquals("text", antique.getDescription());
+        Assertions.assertEquals("url", antique.getPic_url());
+        Assertions.assertEquals(100, antique.getPrice());
+        Assertions.assertEquals(110, antique.getLast_bid_price());
+        Assertions.assertEquals(1, antique.getStore_id());
+        Assertions.assertEquals("store name", antique.getStoreName());
     }
 
 }
