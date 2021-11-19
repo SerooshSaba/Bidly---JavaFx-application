@@ -4,13 +4,10 @@ import BidlyCore.Antique;
 import BidlyCore.Store;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 class DatabaseAdapterTest {
 
@@ -42,6 +39,22 @@ class DatabaseAdapterTest {
     }
 
     @Test
+    @DisplayName("Insert store test")
+    void insert_store() throws SQLException {
+        Assertions.assertEquals(2, databaseAdapter.getAmountOfStores());
+    }
+    @Test
+    @DisplayName("Insert antique test")
+    void insert_antique() throws SQLException {
+        Assertions.assertEquals(2, databaseAdapter.getAmountOfProducts());
+    }
+    @Test
+    @DisplayName("Insert bid test")
+    void insert_bid() throws SQLException {
+        Assertions.assertEquals(1, databaseAdapter.getAllBidsAmount());
+    }
+
+    @Test
     @DisplayName("Get all products on platform test")
     void get_All_Products() throws SQLException {
         Antique returned_antique = databaseAdapter.getStoreProducts(1).get(0);
@@ -50,6 +63,7 @@ class DatabaseAdapterTest {
         Assertions.assertEquals("url", returned_antique.getPic_url());
         Assertions.assertEquals(1000, returned_antique.getPrice());
         Assertions.assertEquals(1, returned_antique.getStore_id());
+        
     }
 
     @Test
