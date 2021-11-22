@@ -134,7 +134,7 @@ public class BuyerController extends Controller {
     @FXML
     private void bidClick( int antiqe_id, int current_bid_price, int bid_amount, Label bid_message, Label current_bid_output ) throws Exception {
 
-        int bids = databaseAdapter.getAmountOfBidsForAntiqe( antiqe_id );
+        int bids = databaseAdapter.getAmountOfBidsForAntique( antiqe_id );
 
         // If there are no bids
         if ( bids == 0 ) {
@@ -164,7 +164,7 @@ public class BuyerController extends Controller {
         } else {
 
             // Find the highest bid for the selected product //
-            int highest_bid = databaseAdapter.getHighestBidOfAntiqe(antiqe_id);
+            int highest_bid = databaseAdapter.getHighestBidOfAntique(antiqe_id);
 
             // If the current bid is higher then the previous bid, process the bid further
             if ( bid_amount > highest_bid ) {
