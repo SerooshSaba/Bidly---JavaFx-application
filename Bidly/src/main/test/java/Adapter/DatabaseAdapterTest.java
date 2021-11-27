@@ -1,26 +1,19 @@
 package Adapter;
-
 import BidlyCore.Antique;
 import BidlyCore.Store;
-import org.junit.Assert;
 import org.junit.jupiter.api.*;
-
 import java.sql.SQLException;
-
+import java.util.ArrayList;
 
 class DatabaseAdapterTest {
 
     public DatabaseAdapter databaseAdapter = new DatabaseAdapter("testing.sqlite");
 
     @BeforeEach
-    void insertStore() throws SQLException {
+    void insertStoresAntiques() throws SQLException {
         databaseAdapter.insertStore(new Store(1, "store name"));
         databaseAdapter.insertStore(new Store(2, "store r us"));
-    }
-
-    @BeforeEach
-    void insertAntique() throws SQLException {
-        databaseAdapter.insertAntique(new Antique("Object", "text", "url", 1000, 1));
+        databaseAdapter.insertAntique(new Antique("Clock", "text", "url", 1000, 1));
         databaseAdapter.insertAntique(new Antique("Table", "text", "url", 2000, 1));
     }
 
@@ -31,10 +24,9 @@ class DatabaseAdapterTest {
 
     @AfterEach
     void clearTables() throws SQLException {
-        databaseAdapter.runQuery("DELETE FROM Antiques;DELETE FROM bids;DELETE FROM stores;");
+        databaseAdapter.runQuery("DELETE FROM antiques");
         databaseAdapter.runQuery("DELETE FROM bids");
-        databaseAdapter.runQuery("DELETE FROM STORES");
-
+        databaseAdapter.runQuery("DELETE FROM stores");
     }
 
     @Test
@@ -42,11 +34,13 @@ class DatabaseAdapterTest {
     void insert_store() throws SQLException {
         Assertions.assertEquals(2, databaseAdapter.getAmountOfStores());
     }
+
     @Test
     @DisplayName("Insert antique test")
     void insert_antique() throws SQLException {
         Assertions.assertEquals(2, databaseAdapter.getAmountOfProducts());
     }
+
     @Test
     @DisplayName("Insert bid test")
     void insert_bid() throws SQLException {
@@ -57,12 +51,11 @@ class DatabaseAdapterTest {
     @DisplayName("Get all products on platform test")
     void get_All_Products() throws SQLException {
         Antique returned_antique = databaseAdapter.getStoreProducts(1).get(0);
-        Assertions.assertEquals("Object", returned_antique.getName());
+        Assertions.assertEquals("Clock", returned_antique.getName());
         Assertions.assertEquals("text", returned_antique.getDescription());
         Assertions.assertEquals("url", returned_antique.getPic_url());
         Assertions.assertEquals(1000, returned_antique.getPrice());
         Assertions.assertEquals(1, returned_antique.getStore_id());
-        
     }
 
     @Test
@@ -106,7 +99,7 @@ class DatabaseAdapterTest {
     @DisplayName("Get all antiques from one store test")
     void get_Store_Products() throws SQLException {
         Antique returned_antique = databaseAdapter.getStoreProducts(1).get(0);
-        Assertions.assertEquals("Object", returned_antique.getName());
+        Assertions.assertEquals("Clock", returned_antique.getName());
         Assertions.assertEquals("text", returned_antique.getDescription());
         Assertions.assertEquals("url", returned_antique.getPic_url());
         Assertions.assertEquals(1000, returned_antique.getPrice());
@@ -146,5 +139,6 @@ class DatabaseAdapterTest {
         ArrayList<Antique> antiques = databaseAdapter.getAllProducts();
         Assertions.assertEquals(2, antiques.size());
     }
+
 }
 

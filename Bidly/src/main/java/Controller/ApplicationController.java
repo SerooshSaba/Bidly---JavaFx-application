@@ -28,13 +28,13 @@ public class ApplicationController extends Controller {
     protected void LoginClick(ActionEvent event) throws IOException {
         String UserSelection = userTypes.getSelectionModel().selectedItemProperty().getValue();
         if (  UserSelection.equals("Admin")  ) {
-            this.changeView( event,"adminView.fxml", 750, 500 );
+            this.changeView( event,"adminView.fxml",  850, 750 );
         }
         else if ( UserSelection.equals("Seller") ) {
-            this.changeView( event,"sellerView.fxml", 800, 750 );
+            this.changeView( event,"sellerView.fxml", 850, 750 );
         }
         else {
-            this.changeView( event,"buyerView.fxml", 900, 750 );
+            this.changeView( event,"buyerView.fxml",  850, 750 );
         }
     }
 

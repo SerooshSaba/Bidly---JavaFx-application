@@ -99,6 +99,7 @@ public class SellerController extends Controller {
         this.SellerView.setManaged(true);
         this.SellerView.setVisible(true);
         logoutButton.setText("LOGOUT");
+
     }
 
     @FXML
@@ -160,7 +161,7 @@ public class SellerController extends Controller {
 
     @FXML
     protected void logoutClick(ActionEvent actionEvent) throws IOException {
-        this.changeView(actionEvent,"authenticationView.fxml", 500, 500 );
+        this.changeView(actionEvent,"authenticationView.fxml", 850, 750 );
     }
 
     @FXML

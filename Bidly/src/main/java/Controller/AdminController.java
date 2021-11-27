@@ -137,7 +137,7 @@ public class AdminController extends Controller {
 
     @FXML
     protected void logoutClick(ActionEvent event) throws IOException {
-        this.changeView(event,"authenticationView.fxml", 750, 500 );
+        this.changeView(event,"authenticationView.fxml", 850, 750 );
     }
 
 }

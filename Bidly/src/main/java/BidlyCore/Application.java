@@ -11,7 +11,7 @@ public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader root = new FXMLLoader(Application.class.getResource("authenticationView.fxml"));
-        Scene scene = new Scene(root.load(), 750, 500);
+        Scene scene = new Scene(root.load(), 850, 750 );
         stage.setTitle("BIDLY");
         stage.setScene(scene);
         Image image = new Image(String.valueOf(Application.class.getResource("/images/handshake.PNG")));
