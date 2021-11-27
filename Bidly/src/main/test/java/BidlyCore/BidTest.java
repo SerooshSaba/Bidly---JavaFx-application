@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-
 public class BidTest {
+
     Bid bid = new Bid(1000);
     Bid bid2 = new Bid(2000);
 

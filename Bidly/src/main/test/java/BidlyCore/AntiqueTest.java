@@ -16,7 +16,6 @@ public class AntiqueTest {
     @Test
     @DisplayName("Fill antique table test")
     void antique_table_fill_value() {
-
         Antique antique = new Antique(1, "text", "text", "url", 100, 100, 1, "name"  );
         Assertions.assertEquals(antique.getAntique_id(), 1);
         Assertions.assertEquals(antique.getName(), "text");

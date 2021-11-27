@@ -1,15 +1,12 @@
 package Adapter;
 import BidlyCore.Antique;
 import BidlyCore.Store;
-import Repositories.IAdminRepository;
-import Repositories.IAntiqueRepository;
-import Repositories.IStoreRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 // Adapter class
-public class DatabaseAdapter implements IAdminRepository, IAntiqueRepository, IStoreRepository {
+public class DatabaseAdapter {
 
     String database_name;
     Connection connection;
@@ -20,7 +17,7 @@ public class DatabaseAdapter implements IAdminRepository, IAntiqueRepository, IS
     }
 
     // READ
-    public ArrayList<Antique> getAllProducts() throws SQLException {
+    public ArrayList<Antique> getAllAntiques() throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         String query_string = "SELECT antiques.antique_id, antiques.name, antiques.description, antiques.pic_url, " +
                 "antiques.price, MAX(bids.amount) AS last_bid, antiques.store_id, stores.name AS storename FROM antiques " +
@@ -38,7 +35,7 @@ public class DatabaseAdapter implements IAdminRepository, IAntiqueRepository, IS
         return prodcuts;
     }
 
-    public ArrayList<Antique> getStoreProducts(int store_id ) throws SQLException {
+    public ArrayList<Antique> getStoreAntiques(int store_id ) throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT * FROM antiques WHERE store_id = ?");
         this.statement.setInt(1, store_id );
@@ -85,7 +82,7 @@ public class DatabaseAdapter implements IAdminRepository, IAntiqueRepository, IS
         return result;
     }
 
-    public int getAmountOfProducts() throws SQLException {
+    public int getAmountOfAntiques() throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("SELECT COUNT(*) as platform_products FROM antiques");
         int result = this.statement.executeQuery().getInt("platform_products");
@@ -115,10 +112,10 @@ public class DatabaseAdapter implements IAdminRepository, IAntiqueRepository, IS
     }
 
     // DELETE
-    public void deleteAntique( String antique_id ) throws SQLException {
+    public void deleteAntique( int antique_id ) throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.database_name );
         this.statement = this.connection.prepareStatement("DELETE FROM antiques WHERE antique_id = ?");
-        this.statement.setInt(1,Integer.parseInt(antique_id));
+        this.statement.setInt(1, antique_id );
         this.statement.executeUpdate();
         this.connection.close();
     }

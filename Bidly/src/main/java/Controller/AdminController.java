@@ -1,9 +1,9 @@
 package Controller;
 
-import Adapter.DatabaseAdapter;
-
 import BidlyCore.Application;
 import BidlyCore.Store;
+import Repositories.AntiqueRepository;
+import Repositories.StoreRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -36,11 +36,11 @@ public class AdminController extends Controller {
     @FXML
     private Label BidAmount;
 
-    // Auctioneer overview
     @FXML
     private VBox storeListingContainer;
 
-    DatabaseAdapter databaseAdapter = new DatabaseAdapter("database.sqlite");
+    AntiqueRepository antiqueRepository = new AntiqueRepository( "database.sqlite" );
+    StoreRepository storeRepository = new StoreRepository( "database.sqlite" );
 
     public void initialize() throws Exception {
 
@@ -61,21 +61,23 @@ public class AdminController extends Controller {
         BidIcon.setImage(bid_jpg);
 
         // Load platform data
-        int stores = databaseAdapter.getAmountOfStores();
+        int stores = storeRepository.getAmountOfStores();
         if ( stores == 1 ) {
             StoreAmount.setText( String.valueOf(stores) + " Seller" );
         } else {
             StoreAmount.setText( String.valueOf(stores) + " Sellers" );
         }
 
-        int products = databaseAdapter.getAmountOfProducts();
-        if ( products == 1 ) {
-            ProductAmount.setText( products + " Product" );
+        int antiques = antiqueRepository.getAmountOfAntiques();
+
+        if ( antiques == 1 ) {
+            ProductAmount.setText( antiques + " Product" );
         } else {
-            ProductAmount.setText( products + " Products" );
+            ProductAmount.setText( antiques + " Products" );
         }
 
-        int bids = databaseAdapter.getAllBidsAmount();
+        int bids = antiqueRepository.getAllBidsAmount();
+
         if ( bids == 1 ) {
             BidAmount.setText( bids + " Bid" );
         } else {
@@ -121,8 +123,8 @@ public class AdminController extends Controller {
 
     private void loadStores() throws Exception {
         storeListingContainer.getChildren().clear();
-        ArrayList<Store> auctioneers = databaseAdapter.getStores();
-        for ( Store store : auctioneers) {
+        ArrayList<Store> stores = storeRepository.getStores();
+        for ( Store store : stores) {
             storeListingContainer.getChildren().add( this.storeListingContainer( store.getStore_id(), store.getName() ) );
         }
     }
@@ -130,14 +132,13 @@ public class AdminController extends Controller {
     @FXML
     public void deleteClick(ActionEvent actionEvent) throws Exception {
         Button button = (Button)(actionEvent.getSource());
-        databaseAdapter.deleteStore(Integer.valueOf(button.getId()));
+        storeRepository.deleteStore(Integer.valueOf(button.getId()));
         this.loadStores();
     }
 
-
     @FXML
     protected void logoutClick(ActionEvent event) throws IOException {
-        this.changeView(event,"authenticationView.fxml", 850, 750 );
+        this.changeView(event,"mainView.fxml", 850, 750 );
     }
 
 }

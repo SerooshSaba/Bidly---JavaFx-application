@@ -1,10 +1,10 @@
 package Controller;
 
-import Adapter.DatabaseAdapter;
 import Adapter.PaymentServiceAdapter;
 
 import BidlyCore.Antique;
 import BidlyCore.Application;
+import Repositories.AntiqueRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class BuyerController extends Controller {
 
     // Adapter
-    DatabaseAdapter databaseAdapter = new DatabaseAdapter("database.sqlite");
+    AntiqueRepository antiqueRepository = new AntiqueRepository( "database.sqlite" );
     PaymentServiceAdapter paymentService = new PaymentServiceAdapter();
 
     // Globals
@@ -115,7 +115,7 @@ public class BuyerController extends Controller {
         paymentProcessorsImage.setFitWidth(175);
 
         //// Get all products on platform
-        ArrayList<Antique> products = this.databaseAdapter.getAllProducts();
+        ArrayList<Antique> products = antiqueRepository.getAllAntiques();
 
         HBox row = createListRow();
         for ( int i = 0; i < products.size(); i++ ) {
@@ -134,7 +134,7 @@ public class BuyerController extends Controller {
     @FXML
     private void bidClick( int antiqe_id, int current_bid_price, int bid_amount, Label bid_message, Label current_bid_output ) throws Exception {
 
-        int bids = databaseAdapter.getAmountOfBidsForAntique( antiqe_id );
+        int bids = antiqueRepository.getAmountOfBidsForAntique( antiqe_id );
 
         // If there are no bids
         if ( bids == 0 ) {
@@ -164,7 +164,7 @@ public class BuyerController extends Controller {
         } else {
 
             // Find the highest bid for the selected product //
-            int highest_bid = databaseAdapter.getHighestBidOfAntique(antiqe_id);
+            int highest_bid = antiqueRepository.getHighestBidOfAntique(antiqe_id);
 
             // If the current bid is higher then the previous bid, process the bid further
             if ( bid_amount > highest_bid ) {
@@ -204,8 +204,8 @@ public class BuyerController extends Controller {
             paymentSuccessMessageContainer.setManaged(true);
             // Update the bid in the product overview
             CURRENT_BID_OUTPUT.setText(String.valueOf(BID_AMOUNT)+"kr");
-            // Insert the bid into the databaseAdapter system
-            databaseAdapter.insertBid( BID_AMOUNT, ANTIQUE_ID);
+            // Insert the bid into the
+            antiqueRepository.insertBid( BID_AMOUNT, ANTIQUE_ID);
             // Display bid succeeded message
             BID_MESSAGE.setText("Bid placed!");
             BID_MESSAGE.setStyle("-fx-font-size:12.5;-fx-text-fill:green;-fx-font-weight:bold");
@@ -225,7 +225,7 @@ public class BuyerController extends Controller {
 
     @FXML
     protected void logoutClick(ActionEvent actionEvent) throws IOException {
-        this.changeView(actionEvent,"authenticationView.fxml", 850, 750 );
+        this.changeView(actionEvent,"mainView.fxml", 850, 750 );
     }
 
     private HBox createListRow() {

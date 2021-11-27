@@ -1,10 +1,10 @@
 package Controller;
 
-import Adapter.DatabaseAdapter;
-
 import Adapter.ValidatorAdapter;
 import BidlyCore.Antique;
 import BidlyCore.Store;
+import Repositories.AntiqueRepository;
+import Repositories.StoreRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -70,11 +70,12 @@ public class SellerController extends Controller {
     @FXML
     private Label deleteStoreLabel;
 
-    DatabaseAdapter databaseAdapter = new DatabaseAdapter("database.sqlite");
+    AntiqueRepository antiqueRepository = new AntiqueRepository( "database.sqlite" );
+    StoreRepository storeRepository = new StoreRepository( "database.sqlite" );
     ValidatorAdapter validator = new ValidatorAdapter();
 
     public void initialize() throws Exception {
-        ArrayList<Store> stores = databaseAdapter.getStores();
+        ArrayList<Store> stores = storeRepository.getStores();
         for ( Store store : stores ) {
             Button button = new Button();
             button.setText( store.getName() );
@@ -92,7 +93,7 @@ public class SellerController extends Controller {
 
     @FXML
     private void login() throws Exception {
-        storeName.setText(databaseAdapter.getStoreName(this.STORE_ID));
+        storeName.setText( storeRepository.getStoreName(this.STORE_ID) );
         this.loadProducts();
         this.LoginRegisterView.setManaged(false);
         this.LoginRegisterView.setVisible(false);
@@ -109,8 +110,8 @@ public class SellerController extends Controller {
             registerErrorMessage.setText("Field cannot be empty");
         } else {
             Store store = new Store( 0, storename );
-            databaseAdapter.insertStore(store);
-            ArrayList<Store> stores = databaseAdapter.getStores();
+            storeRepository.insertStore(store);
+            ArrayList<Store> stores = storeRepository.getStores();
             STORE_ID = stores.get(stores.size()-1).getStore_id();
             this.login();
         }
@@ -118,7 +119,7 @@ public class SellerController extends Controller {
 
     private void loadProducts() throws Exception {
         this.ProductContainer.getChildren().clear();
-        ArrayList<Antique> antiques = databaseAdapter.getStoreProducts(STORE_ID);
+        ArrayList<Antique> antiques = storeRepository.getStoreAntiques(STORE_ID);
         for ( Antique antique : antiques) {
             ProductContainer.getChildren().add( this.createProductListItem(antique) );
         }
@@ -145,7 +146,7 @@ public class SellerController extends Controller {
 
             Antique antique = new Antique( input[0], input[1], input[2], Integer.parseInt(input[3]), STORE_ID );
 
-            if ( databaseAdapter.insertAntique(antique) == 1 ) {
+            if ( antiqueRepository.insertAntique(antique) == 1 ) {
                 MessageLabel.setStyle("-fx-text-fill:green");
                 MessageLabel.setText("Product inserted to store!");
                 loadProducts();
@@ -161,20 +162,20 @@ public class SellerController extends Controller {
 
     @FXML
     protected void logoutClick(ActionEvent actionEvent) throws IOException {
-        this.changeView(actionEvent,"authenticationView.fxml", 850, 750 );
+        this.changeView(actionEvent,"mainView.fxml", 850, 750 );
     }
 
     @FXML
     // Add item method
     public void deleteClick(ActionEvent actionEvent) throws Exception {
         Button button = (Button)(actionEvent.getSource());
-        this.databaseAdapter.deleteAntique(button.getId());
+        antiqueRepository.deleteAntique( Integer.parseInt(button.getId()));
         this.loadProducts();
     }
 
     @FXML
     public void deleteStore(ActionEvent actionEvent) throws SQLException {
-        databaseAdapter.deleteStore(STORE_ID);
+        storeRepository.deleteStore(STORE_ID);
         deleteStoreLabel.setVisible(true);
         deleteStoreLabel.setManaged(true);
     }

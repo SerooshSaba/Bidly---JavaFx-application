@@ -38,7 +38,7 @@ class DatabaseAdapterTest {
     @Test
     @DisplayName("Insert antique test")
     void insert_antique() throws SQLException {
-        Assertions.assertEquals(2, databaseAdapter.getAmountOfProducts());
+        Assertions.assertEquals(2, databaseAdapter.getAmountOfAntiques());
     }
 
     @Test
@@ -50,7 +50,7 @@ class DatabaseAdapterTest {
     @Test
     @DisplayName("Get all products on platform test")
     void get_All_Products() throws SQLException {
-        Antique returned_antique = databaseAdapter.getStoreProducts(1).get(0);
+        Antique returned_antique = databaseAdapter.getStoreAntiques(1).get(0);
         Assertions.assertEquals("Clock", returned_antique.getName());
         Assertions.assertEquals("text", returned_antique.getDescription());
         Assertions.assertEquals("url", returned_antique.getPic_url());
@@ -98,22 +98,21 @@ class DatabaseAdapterTest {
     @Test
     @DisplayName("Get all antiques from one store test")
     void get_Store_Products() throws SQLException {
-        Antique returned_antique = databaseAdapter.getStoreProducts(1).get(0);
+        Antique returned_antique = databaseAdapter.getStoreAntiques(1).get(0);
         Assertions.assertEquals("Clock", returned_antique.getName());
         Assertions.assertEquals("text", returned_antique.getDescription());
         Assertions.assertEquals("url", returned_antique.getPic_url());
         Assertions.assertEquals(1000, returned_antique.getPrice());
         Assertions.assertEquals(1, returned_antique.getStore_id());
-        Assertions.assertEquals(2, databaseAdapter.getStoreProducts(1).size());
+        Assertions.assertEquals(2, databaseAdapter.getStoreAntiques(1).size());
     }
 
     @Test
     @DisplayName("Delete Antique test")
     void delete_Antique() throws SQLException {
-        Antique antique = databaseAdapter.getAllProducts().get(0);
-        String id = String.valueOf(antique.getAntique_id());
-        databaseAdapter.deleteAntique(id);
-        Assertions.assertEquals(1, databaseAdapter.getAllProducts().size());
+        Antique antique = databaseAdapter.getAllAntiques().get(0);
+        databaseAdapter.deleteAntique(antique.getAntique_id());
+        Assertions.assertEquals(1, databaseAdapter.getAllAntiques().size());
     }
 
     @Test
@@ -123,7 +122,7 @@ class DatabaseAdapterTest {
         int id = store.getStore_id();
         databaseAdapter.deleteStore(id);
         Assertions.assertEquals(1, databaseAdapter.getStores().size());
-        Assertions.assertEquals(0, databaseAdapter.getStoreProducts(id).size());
+        Assertions.assertEquals(0, databaseAdapter.getStoreAntiques(id).size());
     }
 
     @Test
@@ -136,7 +135,7 @@ class DatabaseAdapterTest {
     @Test
     @DisplayName("Get number of antiques on platform test")
     void get_Amount_Of_Products() throws SQLException {
-        ArrayList<Antique> antiques = databaseAdapter.getAllProducts();
+        ArrayList<Antique> antiques = databaseAdapter.getAllAntiques();
         Assertions.assertEquals(2, antiques.size());
     }
 
