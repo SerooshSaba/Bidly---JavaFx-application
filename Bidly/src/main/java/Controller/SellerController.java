@@ -16,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -70,9 +69,9 @@ public class SellerController extends Controller {
     @FXML
     private Label deleteStoreLabel;
 
-    AntiqueRepository antiqueRepository = new AntiqueRepository( "database.sqlite" );
-    StoreRepository storeRepository = new StoreRepository( "database.sqlite" );
-    ValidatorAdapter validator = new ValidatorAdapter();
+    private AntiqueRepository antiqueRepository = new AntiqueRepository( "database.sqlite" );
+    private StoreRepository storeRepository = new StoreRepository( "database.sqlite" );
+    private ValidatorAdapter validator = new ValidatorAdapter();
 
     public void initialize() throws Exception {
         ArrayList<Store> stores = storeRepository.getStores();
@@ -100,7 +99,6 @@ public class SellerController extends Controller {
         this.SellerView.setManaged(true);
         this.SellerView.setVisible(true);
         logoutButton.setText("LOGOUT");
-
     }
 
     @FXML
@@ -161,11 +159,6 @@ public class SellerController extends Controller {
     }
 
     @FXML
-    protected void logoutClick(ActionEvent actionEvent) throws IOException {
-        this.changeView(actionEvent,"mainView.fxml", 850, 750 );
-    }
-
-    @FXML
     // Add item method
     public void deleteClick(ActionEvent actionEvent) throws Exception {
         Button button = (Button)(actionEvent.getSource());
@@ -181,7 +174,7 @@ public class SellerController extends Controller {
     }
 
     // Product list item creator
-    public HBox createProductListItem( Antique antique) {
+    public HBox createProductListItem( Antique antique ) {
 
         HBox container = new HBox();
         container.setPrefWidth(280);

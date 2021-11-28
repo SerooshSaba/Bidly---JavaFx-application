@@ -5,7 +5,6 @@ import Adapter.PaymentServiceAdapter;
 import BidlyCore.Antique;
 import BidlyCore.Application;
 import Repositories.AntiqueRepository;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -17,14 +16,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class BuyerController extends Controller {
-
-    // Adapter
-    AntiqueRepository antiqueRepository = new AntiqueRepository( "database.sqlite" );
-    PaymentServiceAdapter paymentService = new PaymentServiceAdapter();
 
     // Globals
     private int ANTIQUE_ID;
@@ -55,6 +49,9 @@ public class BuyerController extends Controller {
     private VBox paymentSuccessMessageContainer;
     @FXML
     private VBox paymentFailureMessageContainer;
+
+    private AntiqueRepository antiqueRepository = new AntiqueRepository( "database.sqlite" );
+    private PaymentServiceAdapter paymentService = new PaymentServiceAdapter();
 
     public void initialize() throws Exception {
         // Load navigation logo
@@ -132,7 +129,7 @@ public class BuyerController extends Controller {
     }
 
     @FXML
-    private void bidClick( int antiqe_id, int current_bid_price, int bid_amount, Label bid_message, Label current_bid_output ) throws Exception {
+    public void bidClick( int antiqe_id, int current_bid_price, int bid_amount, Label bid_message, Label current_bid_output ) throws Exception {
 
         int bids = antiqueRepository.getAmountOfBidsForAntique( antiqe_id );
 
@@ -193,7 +190,7 @@ public class BuyerController extends Controller {
     }
 
     @FXML
-    private void payButtonClick() throws Exception {
+    public void payButtonClick() throws Exception {
 
         // Check if the payment information is correct
         if ( paymentService.processPayment( cardNumber.getText(), expirationDate.getText(), securityCode.getText() )) {
@@ -223,11 +220,6 @@ public class BuyerController extends Controller {
         }
     }
 
-    @FXML
-    protected void logoutClick(ActionEvent actionEvent) throws IOException {
-        this.changeView(actionEvent,"mainView.fxml", 850, 750 );
-    }
-
     private HBox createListRow() {
         HBox row = new HBox();
         row.setAlignment(Pos.CENTER);
@@ -235,7 +227,7 @@ public class BuyerController extends Controller {
         return row;
     }
 
-    private VBox createProductView( Antique antique) {
+    private VBox createProductView( Antique antique ) {
 
         // Create main container
         VBox container = new VBox();

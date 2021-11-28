@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 
-public class ApplicationController extends Controller {
+public class LoginController extends Controller {
 
     @FXML
     private ImageView logoImage;

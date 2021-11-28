@@ -1,9 +1,7 @@
 package Repositories;
-
 import Adapter.DatabaseAdapter;
 import BidlyCore.Antique;
 import Interfaces.IAntiqueRepository;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 

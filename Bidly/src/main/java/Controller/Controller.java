@@ -2,6 +2,7 @@ package Controller;
 
 import BidlyCore.Application;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -16,6 +17,11 @@ public abstract class Controller {
         Scene scene = new Scene(root.load(), width, height);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    public void logoutClick(ActionEvent actionEvent) throws IOException {
+        this.changeView(actionEvent,"mainView.fxml", 850, 750 );
     }
 
 }

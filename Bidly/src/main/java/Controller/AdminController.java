@@ -15,7 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class AdminController extends Controller {
@@ -36,11 +35,12 @@ public class AdminController extends Controller {
     @FXML
     private Label BidAmount;
 
+    // Stores list
     @FXML
     private VBox storeListingContainer;
 
-    AntiqueRepository antiqueRepository = new AntiqueRepository( "database.sqlite" );
-    StoreRepository storeRepository = new StoreRepository( "database.sqlite" );
+    private AntiqueRepository antiqueRepository = new AntiqueRepository( "database.sqlite" );
+    private StoreRepository storeRepository = new StoreRepository( "database.sqlite" );
 
     public void initialize() throws Exception {
 
@@ -134,11 +134,6 @@ public class AdminController extends Controller {
         Button button = (Button)(actionEvent.getSource());
         storeRepository.deleteStore(Integer.valueOf(button.getId()));
         this.loadStores();
-    }
-
-    @FXML
-    protected void logoutClick(ActionEvent event) throws IOException {
-        this.changeView(event,"mainView.fxml", 850, 750 );
     }
 
 }

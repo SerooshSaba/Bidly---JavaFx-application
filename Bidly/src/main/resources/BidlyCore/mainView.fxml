@@ -7,7 +7,7 @@
 <?import javafx.scene.control.ComboBox?>
 
 <?import javafx.scene.image.ImageView?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="Controller.ApplicationController">
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="Controller.LoginController">
 
     <!--<Label fx:id="logoText" text="Bidly" />-->
     <ImageView fx:id="logoImage" />
