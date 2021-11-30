@@ -29,8 +29,8 @@ public class ValidatorAdapter {
             String remove_whitespace = string.replaceAll("\\s+", "");
             Integer.parseInt(remove_whitespace);
             isNumber = true;
-        } catch (NumberFormatException exception){
-            System.out.println( "Could not convert string to integer." );
+        } catch ( NumberFormatException exception ){
+            System.out.println( exception );
         }
         return isNumber;
     }
@@ -41,9 +41,8 @@ public class ValidatorAdapter {
         try {
             Image img = new Image(url);
             isValid = true;
-            System.out.println("Image url is valid");
-        } catch (Exception exception) {
-            System.out.println("Image url is not valid.");
+        } catch ( Exception exception ) {
+            System.out.println( exception );
         }
         return isValid;
     }

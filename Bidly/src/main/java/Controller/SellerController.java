@@ -16,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SellerController extends Controller {
@@ -91,7 +90,7 @@ public class SellerController extends Controller {
     }
 
     @FXML
-    private void login() throws Exception {
+    public void login() throws Exception {
         storeName.setText( storeRepository.getStoreName(this.STORE_ID) );
         this.loadProducts();
         this.LoginRegisterView.setManaged(false);
@@ -167,7 +166,7 @@ public class SellerController extends Controller {
     }
 
     @FXML
-    public void deleteStore(ActionEvent actionEvent) throws SQLException {
+    public void deleteStore(ActionEvent actionEvent) throws Exception {
         storeRepository.deleteStore(STORE_ID);
         deleteStoreLabel.setVisible(true);
         deleteStoreLabel.setManaged(true);
@@ -214,6 +213,10 @@ public class SellerController extends Controller {
         container.getChildren().addAll(left_image_container,right_container);
 
         return container;
+    }
+
+    public void setId( int id ) {
+        this.STORE_ID = id;
     }
 
 }

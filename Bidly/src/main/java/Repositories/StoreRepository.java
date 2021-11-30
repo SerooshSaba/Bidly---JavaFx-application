@@ -5,7 +5,6 @@ import BidlyCore.Antique;
 import BidlyCore.Store;
 import Interfaces.IStoreRepository;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class StoreRepository implements IStoreRepository {
@@ -16,27 +15,27 @@ public class StoreRepository implements IStoreRepository {
         this.databaseAdapter = new DatabaseAdapter( database );
     }
 
-    public ArrayList<Antique> getStoreAntiques( int store_id ) throws SQLException {
+    public ArrayList<Antique> getStoreAntiques( int store_id ) {
         return databaseAdapter.getStoreAntiques( store_id );
     }
 
-    public String getStoreName( int store_id ) throws SQLException {
+    public String getStoreName( int store_id ) {
         return databaseAdapter.getStoreName( store_id );
     }
 
-    public int getAmountOfStores() throws SQLException {
+    public int getAmountOfStores() {
         return databaseAdapter.getAmountOfStores();
     }
 
-    public ArrayList<Store> getStores() throws SQLException {
+    public ArrayList<Store> getStores(){
         return databaseAdapter.getStores();
     }
 
-    public void deleteStore( int store_id ) throws SQLException {
+    public void deleteStore( int store_id ) {
         databaseAdapter.deleteStore( store_id );
     }
 
-    public void insertStore( Store store ) throws SQLException {
+    public void insertStore( Store store ) {
         databaseAdapter.insertStore( store );
     }
 

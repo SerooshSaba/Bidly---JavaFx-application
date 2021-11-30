@@ -2,7 +2,6 @@ package Repositories;
 import Adapter.DatabaseAdapter;
 import BidlyCore.Antique;
 import Interfaces.IAntiqueRepository;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AntiqueRepository implements IAntiqueRepository {
@@ -13,35 +12,35 @@ public class AntiqueRepository implements IAntiqueRepository {
         this.databaseAdapter = new DatabaseAdapter( database );
     }
 
-    public ArrayList<Antique> getAllAntiques() throws SQLException {
+    public ArrayList<Antique> getAllAntiques() {
         return databaseAdapter.getAllAntiques();
     }
 
-    public int getAmountOfBidsForAntique( int antique_id ) throws SQLException {
+    public int getAmountOfBidsForAntique( int antique_id ){
         return databaseAdapter.getAmountOfBidsForAntique( antique_id );
     }
 
-    public int getAllBidsAmount() throws SQLException {
+    public int getAllBidsAmount() {
         return databaseAdapter.getAllBidsAmount();
     }
 
-    public int getAmountOfAntiques() throws SQLException {
+    public int getAmountOfAntiques() {
         return databaseAdapter.getAmountOfAntiques();
     }
 
-    public int getHighestBidOfAntique( int antique_id ) throws SQLException {
+    public int getHighestBidOfAntique( int antique_id ) {
         return databaseAdapter.getHighestBidOfAntique( antique_id );
     }
 
-    public void deleteAntique( int antique_id ) throws SQLException {
+    public void deleteAntique( int antique_id ) {
         databaseAdapter.deleteAntique( antique_id );
     }
 
-    public int insertAntique( Antique antique ) throws SQLException {
+    public int insertAntique( Antique antique ) {
         return databaseAdapter.insertAntique( antique );
     }
 
-    public void insertBid( int bid, int id ) throws SQLException {
+    public void insertBid( int bid, int id ) {
         databaseAdapter.insertBid( bid, id );
     }
 

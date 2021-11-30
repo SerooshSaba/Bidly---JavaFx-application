@@ -84,7 +84,6 @@ class DatabaseAdapterTest {
     void get_Store_Name() throws SQLException {
         String store = databaseAdapter.getStoreName(1);
         Assertions.assertEquals("store name", store);
-
     }
 
     @Test
