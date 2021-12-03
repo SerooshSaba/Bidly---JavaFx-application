@@ -96,7 +96,7 @@ class DatabaseAdapterTest {
 
     @Test
     @DisplayName("Get all antiques from one store test")
-    void get_Store_Products() throws SQLException {
+    void get_Store_Antiques() throws SQLException {
         Antique returned_antique = databaseAdapter.getStoreAntiques(1).get(0);
         Assertions.assertEquals("Clock", returned_antique.getName());
         Assertions.assertEquals("text", returned_antique.getDescription());
