@@ -72,7 +72,7 @@ public class SellerController extends Controller {
     private StoreRepository storeRepository = new StoreRepository( "database.sqlite" );
     private ValidatorAdapter validator = new ValidatorAdapter();
 
-    public void initialize() throws Exception {
+    public void initialize() {
         ArrayList<Store> stores = storeRepository.getStores();
         for ( Store store : stores ) {
             Button button = new Button();
@@ -90,7 +90,7 @@ public class SellerController extends Controller {
     }
 
     @FXML
-    public void login() throws Exception {
+    public void login() {
         storeName.setText( storeRepository.getStoreName(this.STORE_ID) );
         this.loadProducts();
         this.LoginRegisterView.setManaged(false);
@@ -101,7 +101,7 @@ public class SellerController extends Controller {
     }
 
     @FXML
-    private void registerStore() throws Exception {
+    private void registerStore() {
         String storename = registerStoreName.getText();
         if ( validator.stringEmpty(storename) ) {
             registerErrorMessage.setText("Field cannot be empty");
@@ -114,7 +114,7 @@ public class SellerController extends Controller {
         }
     }
 
-    private void loadProducts() throws Exception {
+    private void loadProducts() {
         this.ProductContainer.getChildren().clear();
         ArrayList<Antique> antiques = storeRepository.getStoreAntiques(STORE_ID);
         for ( Antique antique : antiques) {
@@ -124,7 +124,7 @@ public class SellerController extends Controller {
 
     // Add item method
     @FXML
-    protected void addItemClick(ActionEvent event) throws Exception {
+    protected void addItemClick(ActionEvent event) {
         String[] input = new String[]{ this.ItemName.getText(), this.ItemDescription.getText(), this.ItemPicUrl.getText(), this.ItemPrice.getText() };
         // Validate inputs
         if ( validator.stringsEmpty(input) ) {
@@ -159,14 +159,14 @@ public class SellerController extends Controller {
 
     @FXML
     // Add item method
-    public void deleteClick(ActionEvent actionEvent) throws Exception {
+    public void deleteClick(ActionEvent actionEvent) {
         Button button = (Button)(actionEvent.getSource());
         antiqueRepository.deleteAntique( Integer.parseInt(button.getId()));
         this.loadProducts();
     }
 
     @FXML
-    public void deleteStore(ActionEvent actionEvent) throws Exception {
+    public void deleteStore(ActionEvent actionEvent) {
         storeRepository.deleteStore(STORE_ID);
         deleteStoreLabel.setVisible(true);
         deleteStoreLabel.setManaged(true);

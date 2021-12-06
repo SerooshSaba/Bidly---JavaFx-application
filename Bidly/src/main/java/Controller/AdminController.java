@@ -42,7 +42,7 @@ public class AdminController extends Controller {
     private AntiqueRepository antiqueRepository = new AntiqueRepository( "database.sqlite" );
     private StoreRepository storeRepository = new StoreRepository( "database.sqlite" );
 
-    public void initialize() throws Exception {
+    public void initialize() {
 
         // Load images
         Image store_jpg = new Image(String.valueOf(Application.class.getResource("/images/store.PNG")));
@@ -88,7 +88,7 @@ public class AdminController extends Controller {
     }
 
 
-    public HBox storeListingContainer(int id, String name) throws Exception {
+    public HBox storeListingContainer(int id, String name) {
         HBox container = new HBox();
         container.setPrefWidth(250);
         container.setSpacing(10);
@@ -121,7 +121,7 @@ public class AdminController extends Controller {
         return container;
     }
 
-    private void loadStores() throws Exception {
+    private void loadStores() {
         storeListingContainer.getChildren().clear();
         ArrayList<Store> stores = storeRepository.getStores();
         for ( Store store : stores) {
@@ -130,7 +130,7 @@ public class AdminController extends Controller {
     }
 
     @FXML
-    public void deleteClick(ActionEvent actionEvent) throws Exception {
+    public void deleteClick(ActionEvent actionEvent) {
         Button button = (Button)(actionEvent.getSource());
         storeRepository.deleteStore(Integer.valueOf(button.getId()));
         this.loadStores();
