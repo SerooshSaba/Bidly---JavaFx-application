@@ -10,7 +10,7 @@ class DatabaseAdapterTest {
     public DatabaseAdapter databaseAdapter = new DatabaseAdapter("testing.sqlite");
 
     @BeforeEach
-    void insertStoresAntiques() throws SQLException {
+    void insertStoresAntiques() {
         databaseAdapter.insertStore(new Store(1, "store name"));
         databaseAdapter.insertStore(new Store(2, "store r us"));
         databaseAdapter.insertAntique(new Antique("Clock", "text", "url", 1000, 1));
@@ -18,7 +18,7 @@ class DatabaseAdapterTest {
     }
 
     @BeforeEach
-    void insertBid() throws SQLException {
+    void insertBid() {
         databaseAdapter.insertBid(1001, 1);
     }
 
@@ -31,25 +31,25 @@ class DatabaseAdapterTest {
 
     @Test
     @DisplayName("Insert store test")
-    void insert_store() throws SQLException {
+    void insert_store() {
         Assertions.assertEquals(2, databaseAdapter.getAmountOfStores());
     }
 
     @Test
     @DisplayName("Insert antique test")
-    void insert_antique() throws SQLException {
+    void insert_antique() {
         Assertions.assertEquals(2, databaseAdapter.getAmountOfAntiques());
     }
 
     @Test
     @DisplayName("Insert bid test")
-    void insert_bid() throws SQLException {
+    void insert_bid() {
         Assertions.assertEquals(1, databaseAdapter.getAllBidsAmount());
     }
 
     @Test
     @DisplayName("Get all products on platform test")
-    void get_All_Products() throws SQLException {
+    void get_All_Products() {
         Antique returned_antique = databaseAdapter.getStoreAntiques(1).get(0);
         Assertions.assertEquals("Clock", returned_antique.getName());
         Assertions.assertEquals("text", returned_antique.getDescription());
@@ -60,35 +60,35 @@ class DatabaseAdapterTest {
 
     @Test
     @DisplayName("Get the amount of bid for one antique test")
-    void get_Amount_Of_Bids_For_Antique() throws SQLException {
+    void get_Amount_Of_Bids_For_Antique() {
         int bids = databaseAdapter.getAmountOfBidsForAntique(1);
         Assertions.assertEquals(1, bids);
     }
 
     @Test
     @DisplayName("Get total amount of bids on platform test")
-    void get_All_Bids_Amount() throws SQLException {
+    void get_All_Bids_Amount() {
         int bids = databaseAdapter.getAllBidsAmount();
         Assertions.assertEquals(1, bids);
     }
 
     @Test
     @DisplayName("Get highest bid of an antique test")
-    void get_Highest_Bid_Of_Antique() throws SQLException {
+    void get_Highest_Bid_Of_Antique() {
         int highestBid = databaseAdapter.getHighestBidOfAntique(1);
         Assertions.assertTrue(1000 < highestBid);
     }
 
     @Test
     @DisplayName("Get Store Name test")
-    void get_Store_Name() throws SQLException {
+    void get_Store_Name() {
         String store = databaseAdapter.getStoreName(1);
         Assertions.assertEquals("store name", store);
     }
 
     @Test
     @DisplayName("Get all stores test")
-    void get_Stores() throws SQLException {
+    void get_Stores() {
         ArrayList<Store> stores = databaseAdapter.getStores();
         Assertions.assertTrue(stores.contains(stores.get(1)));
         Assertions.assertEquals(2, stores.size());
