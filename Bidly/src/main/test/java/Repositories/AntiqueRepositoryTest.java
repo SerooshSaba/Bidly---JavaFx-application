@@ -4,6 +4,8 @@ import Adapter.DatabaseAdapter;
 import BidlyCore.Antique;
 import BidlyCore.Store;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,10 +18,10 @@ public class AntiqueRepositoryTest {
 
     @BeforeEach
     void insertStoresAntiques() {
-        storeRepository.insertStore(new Store(1, "store name"));
-        storeRepository.insertStore(new Store(2, "store r us"));
-        antiqueRepository.insertAntique(new Antique("Clock", "text", "url", 1000, 1));
-        antiqueRepository.insertAntique(new Antique("Table", "text", "url", 2000, 1));
+        storeRepository.insertStore(new Store(1, "Antiques r us"));
+        storeRepository.insertStore(new Store(2, "Hobby"));
+        antiqueRepository.insertAntique(new Antique(1,"Clock", "old clock", "url", 1000, 1));
+        antiqueRepository.insertAntique(new Antique(2, "Table", "old table", "url", 2000, 1));
     }
 
     @BeforeEach
@@ -37,7 +39,9 @@ public class AntiqueRepositoryTest {
     @Test
     @DisplayName("Publish antique")
     void insert_antique() {
+        //Tester insert funksjonen over//
         Assertions.assertEquals(2, antiqueRepository.getAmountOfAntiques());
+
     }
 
     @Test
@@ -82,14 +86,14 @@ public class AntiqueRepositoryTest {
         Assertions.assertEquals(2, antiques.size());
     }
 
+
     @Test
-    @DisplayName("Show all antiques")
+    @DisplayName("Show all antiques from store")
     void get_All_Antiques() {
-        Antique returned_antique = storeRepository.getStoreAntiques(1).get(0);
-        Assertions.assertEquals("Clock", returned_antique.getName());
-        Assertions.assertEquals("text", returned_antique.getDescription());
-        Assertions.assertEquals("url", returned_antique.getPic_url());
-        Assertions.assertEquals(1000, returned_antique.getPrice());
-        Assertions.assertEquals(1, returned_antique.getStore_id());
+        ArrayList<Antique> store_antiques = storeRepository.getStoreAntiques(1);
+        ArrayList<Antique> ret_antiques = antiqueRepository.getAllAntiques();
+        Assertions.assertEquals(store_antiques.toString(),ret_antiques.toString());
+        System.out.println(store_antiques);
+        System.out.println(ret_antiques);
     }
 }

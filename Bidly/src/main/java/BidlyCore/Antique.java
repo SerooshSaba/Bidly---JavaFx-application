@@ -59,4 +59,15 @@ public class Antique {
     public void setStore_id(int store_id) {this.store_id = store_id;}
     public void setStoreName(String storeName){this.storeName=storeName;}
 
+    @Override
+    public String toString() {
+        return
+                "Antique ID=" + antique_id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", pic_url='" + pic_url + '\'' +
+                ", price=" + price +
+                ", store_id=" + store_id +
+                '}';
+    }
 }
