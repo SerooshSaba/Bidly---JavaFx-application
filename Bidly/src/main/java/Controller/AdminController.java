@@ -42,7 +42,7 @@ public class AdminController extends Controller {
     private AntiqueRepository antiqueRepository = new AntiqueRepository( "database.sqlite" );
     private StoreRepository storeRepository = new StoreRepository( "database.sqlite" );
 
-    public void initialize() throws Exception {
+    public void initialize() {
 
         // Load images
         Image store_jpg = new Image(String.valueOf(Application.class.getResource("/images/store.PNG")));
@@ -88,7 +88,7 @@ public class AdminController extends Controller {
     }
 
 
-    public HBox storeListingContainer(int id, String name) throws Exception {
+    public HBox storeListingContainer(int id, String name) {
         HBox container = new HBox();
         container.setPrefWidth(250);
         container.setSpacing(10);
@@ -115,28 +115,13 @@ public class AdminController extends Controller {
             }
         });
 
-        // Edit button
-        Button edit_button = new Button();
-        edit_button.setText("Edit");
-        edit_button.setId(String.valueOf(id));
-
-        edit_button.setPadding(new Insets(1));
-        edit_button.setOnAction(e -> {
-            try {
-                System.out.println( "Edit button pressed!" );
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-        });
-
-
-        name_container.getChildren().addAll( name_label, delete_button, edit_button );
+        name_container.getChildren().addAll( name_label, delete_button );
         container.getChildren().addAll(name_container);
 
         return container;
     }
 
-    private void loadStores() throws Exception {
+    private void loadStores() {
         storeListingContainer.getChildren().clear();
         ArrayList<Store> stores = storeRepository.getStores();
         for ( Store store : stores) {
@@ -145,7 +130,7 @@ public class AdminController extends Controller {
     }
 
     @FXML
-    public void deleteClick(ActionEvent actionEvent) throws Exception {
+    public void deleteClick(ActionEvent actionEvent) {
         Button button = (Button)(actionEvent.getSource());
         storeRepository.deleteStore(Integer.valueOf(button.getId()));
         this.loadStores();

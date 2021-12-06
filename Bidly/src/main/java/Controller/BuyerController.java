@@ -53,7 +53,7 @@ public class BuyerController extends Controller {
     private AntiqueRepository antiqueRepository = new AntiqueRepository( "database.sqlite" );
     private PaymentServiceAdapter paymentService = new PaymentServiceAdapter();
 
-    public void initialize() throws Exception {
+    public void initialize() {
         // Load navigation logo
         Image logoImage = new Image(String.valueOf(Application.class.getResource("/images/logo.PNG")));
         logo.setPreserveRatio(true);
@@ -129,7 +129,7 @@ public class BuyerController extends Controller {
     }
 
     @FXML
-    public void bidClick( int antiqe_id, int current_bid_price, int bid_amount, Label bid_message, Label current_bid_output ) throws Exception {
+    public void bidClick( int antiqe_id, int current_bid_price, int bid_amount, Label bid_message, Label current_bid_output ) {
 
         int bids = antiqueRepository.getAmountOfBidsForAntique( antiqe_id );
 
@@ -190,7 +190,7 @@ public class BuyerController extends Controller {
     }
 
     @FXML
-    public void payButtonClick() throws Exception {
+    public void payButtonClick() {
 
         // Check if the payment information is correct
         if ( paymentService.processPayment( cardNumber.getText(), expirationDate.getText(), securityCode.getText() )) {

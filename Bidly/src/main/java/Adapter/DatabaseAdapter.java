@@ -1,11 +1,13 @@
 package Adapter;
 import BidlyCore.Antique;
 import BidlyCore.Store;
+import Interfaces.IAntiqueRepository;
+import Interfaces.IStoreRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DatabaseAdapter {
+public class DatabaseAdapter implements IStoreRepository, IAntiqueRepository {
 
     String database_name;
     Connection connection;

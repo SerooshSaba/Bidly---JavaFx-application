@@ -7,8 +7,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.IOException;
-
 public class LoginController extends Controller {
 
     @FXML
@@ -25,7 +23,7 @@ public class LoginController extends Controller {
     }
 
     @FXML
-    protected void LoginClick(ActionEvent event) throws IOException {
+    protected void LoginClick(ActionEvent event) {
         String UserSelection = userTypes.getSelectionModel().selectedItemProperty().getValue();
         if (  UserSelection.equals("Admin")  ) {
             this.changeView( event,"adminView.fxml",  850, 750 );
