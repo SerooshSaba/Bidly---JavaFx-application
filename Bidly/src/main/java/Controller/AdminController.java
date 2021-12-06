@@ -115,22 +115,7 @@ public class AdminController extends Controller {
             }
         });
 
-        // Edit button
-        Button edit_button = new Button();
-        edit_button.setText("Edit");
-        edit_button.setId(String.valueOf(id));
-
-        edit_button.setPadding(new Insets(1));
-        edit_button.setOnAction(e -> {
-            try {
-                System.out.println( "Edit button pressed!" );
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-        });
-
-
-        name_container.getChildren().addAll( name_label, delete_button, edit_button );
+        name_container.getChildren().addAll( name_label, delete_button );
         container.getChildren().addAll(name_container);
 
         return container;
