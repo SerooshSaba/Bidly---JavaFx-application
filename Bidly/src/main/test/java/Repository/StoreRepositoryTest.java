@@ -78,4 +78,5 @@ public class StoreRepositoryTest {
         ArrayList<Store> stores = storeRepository.getStores();
         Assertions.assertEquals(2, stores.size());
     }
+    
 }
