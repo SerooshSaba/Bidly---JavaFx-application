@@ -40,7 +40,7 @@ public class DatabaseAdapter implements IStoreRepository, IAntiqueRepository {
         return antiques;
     }
 
-    public ArrayList<Antique> getStoreAntiques(int store_id ) {
+    public ArrayList<Antique> getStoreAntiques( int store_id ) {
         ArrayList<Antique> antiques = new ArrayList<>();
 
         try {
