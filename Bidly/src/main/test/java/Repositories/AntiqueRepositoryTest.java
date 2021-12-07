@@ -37,7 +37,7 @@ public class AntiqueRepositoryTest {
     }
 
     @Test
-    @DisplayName("Publish antique")
+    @DisplayName("Publish antique / Krav 7.1.18")
     void insert_antique() {
         //Tester insert funksjonen over//
         Assertions.assertEquals(2, antiqueRepository.getAmountOfAntiques());
@@ -45,34 +45,35 @@ public class AntiqueRepositoryTest {
     }
 
     @Test
-    @DisplayName("Place bid on antique")
+    @DisplayName("Place bid on antique / Krav 7.1.13 og 7.1.15")
     void insert_bid() {
-        Assertions.assertEquals(1, antiqueRepository.getAllBidsAmount());
+        antiqueRepository.insertBid(2000, 2);
+        Assertions.assertEquals(2, antiqueRepository.getAllBidsAmount());
     }
 
     @Test
-    @DisplayName("Get amount of bids for one antique")
+    @DisplayName("Get amount of bids for one antique / 7.1.28")
     void get_Amount_Of_Bids_For_Antique() {
         int bids = antiqueRepository.getAmountOfBidsForAntique(1);
         Assertions.assertEquals(1, bids);
     }
 
     @Test
-    @DisplayName("Show total amount of bids made on platform")
+    @DisplayName("Show total amount of bids made on platform / 7.1.23")
     void get_All_Bids_Amount() {
         int bids = antiqueRepository.getAllBidsAmount();
         Assertions.assertEquals(1, bids);
     }
 
     @Test
-    @DisplayName("Show highest bid for an antique")
+    @DisplayName("Show highest bid for an antique / Krav 7.1.27")
     void get_Highest_Bid_Of_Antique() {
         int highestBid = antiqueRepository.getHighestBidOfAntique(1);
         Assertions.assertTrue(1000 < highestBid);
     }
 
     @Test
-    @DisplayName("Delete Antique")
+    @DisplayName("Delete Antique / Krav 7.1.20")
     void delete_Antique() {
         Antique antique = antiqueRepository.getAllAntiques().get(0);
         antiqueRepository.deleteAntique(antique.getAntique_id());
@@ -80,7 +81,7 @@ public class AntiqueRepositoryTest {
     }
 
     @Test
-    @DisplayName("Show total amount of antiques on platform")
+    @DisplayName("Show total amount of antiques on platform / 7.1.23")
     void get_Amount_Of_Antiques() {
         ArrayList<Antique> antiques = antiqueRepository.getAllAntiques();
         Assertions.assertEquals(2, antiques.size());
@@ -88,7 +89,7 @@ public class AntiqueRepositoryTest {
 
 
     @Test
-    @DisplayName("Show all antiques from store")
+    @DisplayName("Show all antiques on platform / 7.1.24")
     void get_All_Antiques() {
         ArrayList<Antique> store_antiques = storeRepository.getStoreAntiques(1);
         ArrayList<Antique> ret_antiques = antiqueRepository.getAllAntiques();

@@ -35,14 +35,14 @@ public class StoreRepositoryTest {
     }
 
     @Test
-    @DisplayName("Display store name")
+    @DisplayName("Display store name / 7.1.24")
     void get_Store_Name() {
         String store = storeRepository.getStoreName(1);
         Assertions.assertEquals("store name", store);
     }
 
     @Test
-    @DisplayName("Show all stores")
+    @DisplayName("Show all stores / 7.1.25")
     void get_Stores() {
         ArrayList<Store> stores = storeRepository.getStores();
         Assertions.assertTrue(stores.contains(stores.get(1)));
@@ -50,8 +50,9 @@ public class StoreRepositoryTest {
     }
 
     @Test
-    @DisplayName("Get all antiques from a store")
+    @DisplayName("Show all antiques from a store / 7.1.26 og 7.1.28")
     void get_Store_Antiques() {
+        // Viser at den første antikviteten ligger i databasen og da vil nr.2 også være der
         Antique returned_antique = storeRepository.getStoreAntiques(1).get(0);
         Assertions.assertEquals("Clock", returned_antique.getName());
         Assertions.assertEquals("text", returned_antique.getDescription());
@@ -62,7 +63,7 @@ public class StoreRepositoryTest {
     }
 
     @Test
-    @DisplayName("Delete a store")
+    @DisplayName("Delete a store / Tester krav 7.1.4")
     void delete_Store() {
         Store store = storeRepository.getStores().get(0);
         int id = store.getStore_id();
@@ -72,7 +73,7 @@ public class StoreRepositoryTest {
     }
 
     @Test
-    @DisplayName("Show number of stores on platform")
+    @DisplayName("Show number of stores on platform / 7.1.23")
     void get_Amount_Of_Stores () {
         ArrayList<Store> stores = storeRepository.getStores();
         Assertions.assertEquals(2, stores.size());
