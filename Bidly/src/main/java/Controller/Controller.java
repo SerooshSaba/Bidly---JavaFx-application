@@ -1,6 +1,6 @@
 package Controller;
 
-import BidlyCore.Application;
+import Main.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

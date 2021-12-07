@@ -1,10 +1,10 @@
 package Controller;
 
 import Adapter.ValidatorAdapter;
-import BidlyCore.Antique;
-import BidlyCore.Store;
-import Repositories.AntiqueRepository;
-import Repositories.StoreRepository;
+import Core.Antique;
+import Core.Store;
+import Repository.AntiqueRepository;
+import Repository.StoreRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;

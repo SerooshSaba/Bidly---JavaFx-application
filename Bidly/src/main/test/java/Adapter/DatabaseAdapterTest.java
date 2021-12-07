@@ -1,6 +1,6 @@
 package Adapter;
-import BidlyCore.Antique;
-import BidlyCore.Store;
+import Core.Antique;
+import Core.Store;
 import org.junit.jupiter.api.*;
 import java.sql.SQLException;
 import java.util.ArrayList;

@@ -2,9 +2,9 @@ package Controller;
 
 import Adapter.PaymentServiceAdapter;
 
-import BidlyCore.Antique;
-import BidlyCore.Application;
-import Repositories.AntiqueRepository;
+import Core.Antique;
+import Main.Application;
+import Repository.AntiqueRepository;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

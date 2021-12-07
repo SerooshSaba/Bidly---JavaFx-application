@@ -4,8 +4,10 @@ module com.BidlyCore {
     requires javafx.graphics;
     requires java.sql;
 
-    opens BidlyCore to javafx.fxml;
-    exports BidlyCore;
+    opens Main to javafx.fxml;
+    exports Main;
     exports Controller;
     opens Controller to javafx.fxml;
+    exports Core;
+    opens Core to javafx.fxml;
 }

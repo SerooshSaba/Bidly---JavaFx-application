@@ -1,8 +1,8 @@
 package Adapter;
-import BidlyCore.Antique;
-import BidlyCore.Store;
-import Interfaces.IAntiqueRepository;
-import Interfaces.IStoreRepository;
+import Core.Antique;
+import Core.Store;
+import Interface.IAntiqueRepository;
+import Interface.IStoreRepository;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
 package Controller;
 
-import BidlyCore.Application;
-import BidlyCore.Store;
-import Repositories.AntiqueRepository;
-import Repositories.StoreRepository;
+import Main.Application;
+import Core.Store;
+import Repository.AntiqueRepository;
+import Repository.StoreRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
